@@ -2,14 +2,14 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import Provider from "./store";
-import Dashboard from "./container/Dashboard";
+import AppRouter from './routes';
 
 ReactDOM.render(
   <Provider>
     {
       // <App />
     }
-    <Dashboard/>
+    <AppRouter/>
   </Provider>,
   document.getElementById("root")
 );

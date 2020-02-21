@@ -1,9 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Counter from "./container/counter";
-import Login from "./container/login";
+import Counter from "./container/pages/counter";
+import Login from "./container/pages/login";
 import Connect from "./store/connect";
-import Header from "./container/header";
+import Header from "./container/organisms/header";
 import Dashboard from "./container/Dashboard";
 
 const App = ({ auth }) => {

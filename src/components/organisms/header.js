@@ -1,6 +1,6 @@
 import React from "react";
-import { logoutAction } from "../store/reducers/auth";
-import useStore from "../store/hooks/useStore";
+import { logoutAction } from "../../store/reducers/auth";
+import useStore from "../../store/hooks/useStore";
 
 const Header = () => {
   const {

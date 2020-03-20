@@ -11,14 +11,16 @@ import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import RotateLeftIcon from "@material-ui/icons/RotateLeft";
 import RestoreFromTrashIcon from "@material-ui/icons/RestoreFromTrash";
 import EqualizerIcon from "@material-ui/icons/Equalizer";
-import { shadow1 } from "../../settings/module01/animationsAndEffects";
-import { white } from "../../settings/module01/colors";
+// import { shadow1 } from "../../settings/module01/animationsAndEffects";
+// import { white } from "../../settings/module01/colors";
+import { useTheme } from "@material-ui/core/styles";
+
 
 
 export const iconOptions = option => {
   switch (option) {
     case 1:
-      return <NoteAddIcon />; 
+      return <NoteAddIcon />;
     case 2:
       return <EditOutlinedIcon />;
     case 3:
@@ -50,11 +52,11 @@ const SquaredIconContainer = styled.div`
   align-content: center;
   height: 100%;
   min-width: 90px;
-  color: ${white};
+  color: ${props => props.customStyles.color};
   cursor: pointer;
   font-size: 0.7em;
   &:hover{
-    box-shadow: ${shadow1};
+    box-shadow: ${props => props.customStyles.shadow};
   }
 `;
 
@@ -64,14 +66,21 @@ const SquaredIconContainer = styled.div`
 
 /* caso seja um label composto */
 const drawCompoundLabel = label =>
-  label.split(" ").map(item => <span>{item}</span>);
+  label.split(" ").map((item, index) => <span key={`${index}${item}`}>{item}</span>);
 
-const SquaredIcon = ({ option, label }) => (
-  <SquaredIconContainer>
+const SquaredIcon = ({ option, label }) => {
+  const theme = useTheme();
+  const customStyles = {
+    shadow : theme.shadows[1],
+    color: theme.palette.primary.contrastText,
+  }
+  return (
+  <SquaredIconContainer customStyles={customStyles}>
     {iconOptions(option)}
     {drawCompoundLabel(label)}
   </SquaredIconContainer>
-);
+  )
+};
 
 SquaredIcon.propTypes = {
   option: PropTypes.number,

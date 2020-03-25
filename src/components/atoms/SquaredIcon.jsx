@@ -72,7 +72,7 @@ const SquaredIcon = ({ option, label }) => {
   const theme = useTheme();
   const customStyles = {
     shadow : theme.shadows[1],
-    color: theme.palette.primary.contrastText,
+    color: '#fff',
   }
   return (
   <SquaredIconContainer customStyles={customStyles}>

@@ -6,7 +6,12 @@ import SignUp from "../components/pages/SinglePages/SignUp";
 import Dashboard from "../components/pages/Dashboard";
 import Login from "../components/pages/login";
 import Counter from "../components/pages/counter";
+import TablePage from "../components/pages/test/TablePage";
+import EnhancedTable from "../components/pages/test/TablePage2";
 import TestPage from "../components/pages/test";
+import CardPage from "../components/pages/test/CardPage";
+
+
 
 
 const history = createBrowserHistory();
@@ -19,7 +24,10 @@ const AppRouter = ({children}) => {
           <Route path={"/signup"}> <SignUp /> </Route>
           <Route path={"/dashboard"}> <Dashboard /></Route>
           <Route path={"/counter"}> <Counter /></Route>
-          <Route exact path={"/"} ><TestPage/></Route>
+          <Route path={"/table"}> <TablePage/> </Route>
+          <Route path={"/table2"}> <EnhancedTable/> </Route>
+          <Route path={"/card"}> <CardPage/> </Route>
+          <Route exact path={"/"} > <TestPage/> </Route>
 
           <Private>
             <Switch>

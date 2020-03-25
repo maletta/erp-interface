@@ -16,6 +16,7 @@ const theme = createMuiTheme({
       main: "#e74c3c",
       light: "#ffcccc",// fab1a0, FFAAAA
       dark: "#D46A6A", //D46A6A
+      contrastText: '#2f3542',
     },
     secondary: {
       main: "#FE6",
@@ -28,7 +29,7 @@ const theme = createMuiTheme({
 ReactDOM.render(
   <Provider>
     <ThemeProvider theme={theme}>
-      <CssBaseline />
+    <CssBaseline />
       {
         // <App />
       }

@@ -40,10 +40,10 @@ function mountInputStyles(theme, paletteColor) {
 const useStylesLabel = makeStyles(theme => (
     {
         root: {
-            color: '#000',
+            color: theme.palette['primary'].contrastText,
             textTransform: 'uppercase',
             '&$focused': {
-                color: '#000',
+                color: theme.palette['primary'].contrastText,
             },
         },
         focused: {},

@@ -1,7 +1,6 @@
 import React from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import Drawer from "@material-ui/core/Drawer";
 import Box from "@material-ui/core/Box";
 import AppBar from "@material-ui/core/AppBar";
@@ -130,11 +129,14 @@ export default function Dashboard() {
   };
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
+  console.log('classes ', classes);
+  console.log('classes clsx ', fixedHeightPaper);
+
   return (
     <div className={classes.root}>
-      {/* normalize do material ui, reset global*/}
+      {/* normalize do material ui, reset global
       <CssBaseline />
-      
+      */}
       {/* normalize do material ui global, para children*/}
       {/* <ScopedCssBaseline>children</ScopedCssBaseline> */}
 

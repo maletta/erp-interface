@@ -6,12 +6,13 @@ import PropTypes from 'prop-types';
 // Esconder scroll por causar o spacing negativo do Material UI
 // Aparentemente o componente <Grid container> que gera spacing negativo 
 const BodyScrollHidden = ({ children }) => {
-    document.body.style.overflowX = "hidden";
     useEffect(() => {
+        document.body.style.overflow = "hidden";
+
         return function adjustBody() {
-            document.body.style.overflowX = "auto";
+            document.body.style.overflow = "inherit";
         }
-    }, [])
+    });
 
     return (
         <React.Fragment>

@@ -14,6 +14,7 @@ const optionsList = [
 const TestPage = () => (
     <Fragment>
         <IconsPalette options={optionsList}/>
+        
     </Fragment>
 );
 

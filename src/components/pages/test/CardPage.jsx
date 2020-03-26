@@ -1,11 +1,6 @@
 import React from "react";
-import SimpleCard from "../../atoms/SimpleCard";
 import TestCard from "../../atoms/Test.Card";
-import BalanceCard from "../../atoms/BalanceCard";
-import Bb from "../../../assets/bb.png";
-import Bradesco from "../../../assets/bradesco.png";
-import Itau from "../../../assets/itau.png";
-import { makeStyles } from "@material-ui/core/styles";
+import SimpleSidebar from "../../molecules/SimpleSidebar";
 
 
 const balanceCard = [
@@ -34,37 +29,28 @@ const simpleCard = [
     {
         description: '257 - 888 88888-8',
         content: 'R$ 163.009,50',
-        icon: () => Bradesco,
+        icon: 1,
         isPositive: true,
     },
     {
         description: '341 - 888 88888-8',
         content: 'R$ 35.008,63',
-        icon: () => Itau,
+        icon: 2,
         isPositive: true,
     },
     {
         description: '001 - 888 88888-8',
         content: 'R$ -3.052,89',
-        icon: () => Bb,
+        icon: 0,
         isPositive: false,
     },
 ];
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        flexGrow: 1,
-        width: '100%',
-    },
-}));
-
 const CardPage = () => {
-    const c = useStyles();
     return (
-        <div className={c.root}>
+        <div>
             <TestCard />
-            {balanceCard.map((card, index) => <BalanceCard key={`${index}`} {...card} />)}
-            {simpleCard.map((card, index) => <SimpleCard key={`${index}${card.content}`} {...card} />)}
+            <SimpleSidebar simpleCard={simpleCard} balanceCard={balanceCard}/>
         </div>
     );
 

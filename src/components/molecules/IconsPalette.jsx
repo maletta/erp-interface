@@ -9,7 +9,7 @@ import { useTheme } from "@material-ui/core/styles";
 const PalletIconsContainer = styled.div`
   display: flex;
   flex-direction: row;
-  height: 80px;
+  height: 10vh;
   background-color: ${(props) => props.customStyles.background };
   overflow-x: auto;
   box-shadow: ${(props) => props.customStyles.shadow[1] };
@@ -42,7 +42,6 @@ const drawIconList = list =>
 
 const IconsPalette = ({ options }) => {
   const theme = useTheme();
-  console.log(theme);
   const customStyles = {
     background: theme.palette.primary.main,
     shadow: [theme.shadows[1],theme.shadows[2]],

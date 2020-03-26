@@ -20,16 +20,25 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import Switch from '@material-ui/core/Switch';
 import TablePagination from '@material-ui/core/TablePagination';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import OutlinedInput from "@material-ui/core/OutlinedInput";
 
+/*
+TotalHeight = 85vh
+{
+    Toobal: 9vh
+    TableContainer: 68vh
+    TalePagination: 8vh
+}
+*/
 
 
 export const createHeadersData = (data) => { // adiciona propriedades para o header
     const keys = Object.keys(data[0]);
- return   keys.map((column, index)=> {
-     const regex = /^-?[0-9]?[0-9,\.]+$/; // regex identifica se é número 
+    return keys.map((column, index) => {
+        const regex = /^-?[0-9]?[0-9,\.]+$/; // regex identifica se é número 
         return {
             columnName: column,
-            numeric:  regex.test(data[0][column])? true : false,
+            numeric: regex.test(data[0][column]) ? true : false,
             disablePadding: index === 0 ? true : false,
             label: column,
         }
@@ -130,6 +139,7 @@ const useToolbarStyles = makeStyles(theme => ({
     root: {
         paddingLeft: theme.spacing(2),
         paddingRight: theme.spacing(1),
+        height: '9vh',
     },
     highlight:
         theme.palette.type === 'light'
@@ -173,11 +183,14 @@ const EnhancedTableToolbar = props => {
                     </IconButton>
                 </Tooltip>
             ) : (
-                    <Tooltip title="Filter list">
-                        <IconButton aria-label="filter list">
-                            <FilterListIcon />
-                        </IconButton>
-                    </Tooltip>
+                    <React.Fragment>
+                        <Tooltip title="Filter list">
+                            <IconButton aria-label="filter list">
+                                <FilterListIcon />
+                            </IconButton>
+                        </Tooltip>
+                        <OutlinedInput placeholder="pesquisar"/>
+                    </React.Fragment>
                 )}
         </Toolbar>
     );
@@ -192,6 +205,7 @@ EnhancedTableToolbar.propTypes = {
 const useStyles = makeStyles(theme => ({
     root: {
         width: '100%',
+        maxHeight: '100%',
         "& .MuiTableSortLabel-root": {
             color: theme.palette.primary.main,
             "&:hover": {
@@ -203,11 +217,23 @@ const useStyles = makeStyles(theme => ({
         },
     },
     paper: {
+        borderRadius: '0px 0px',
         width: '100%',
-        marginBottom: theme.spacing(2),
+        height: '100%',
+        // marginBottom: theme.spacing(2),
+        boxShadow: theme.shadows[3],
+        padding: '0px 4px 0px 4px',
     },
     table: {
         /* minWidth: 750, */
+    },
+    tableContainer: {
+        height: '68vh',
+    },
+    tablePagination: {
+        height: '8vh',
+        minHeight: '50px',
+        overflow: 'hidden',
     },
     visuallyHidden: {
         border: 0,
@@ -249,8 +275,8 @@ export default function EnhancedTable(props) {
     const [orderByColumn, setOrderBy] = React.useState('empresa');
     const [selected, setSelected] = React.useState([]);
     const [page, setPage] = React.useState(0);
-    const [dense, setDense] = React.useState(false);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [dense, setDense] = React.useState(true);
+    const [rowsPerPage, setRowsPerPage] = React.useState(20);
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderByColumn === property && orderAscDesc === 'asc';
@@ -308,7 +334,7 @@ export default function EnhancedTable(props) {
         <div className={classes.root}>
             <Paper className={classes.paper}>
                 <EnhancedTableToolbar numSelected={selected.length} />
-                <TableContainer>
+                <TableContainer className={classes.tableContainer}>
                     <TableUI
                         className={classes.table}
                         aria-labelledby="tableTitle"
@@ -330,7 +356,7 @@ export default function EnhancedTable(props) {
                         >
                             {getOrderedList(rows, orderAscDesc, orderByColumn)
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                .map((row, index) => {
+                                .map((row, index, array) => {
                                     const isItemSelected = isSelected(row.id);
                                     const labelId = `enhanced-table-checkbox-${index}`;
                                     return (
@@ -342,8 +368,9 @@ export default function EnhancedTable(props) {
                     </TableUI>
                 </TableContainer>
                 <TablePagination
+                    className={classes.tablePagination}
                     labelRowsPerPage={"Linhas por página"}
-                    rowsPerPageOptions={[5, 10, 25]}
+                    rowsPerPageOptions={[5, 10, 20]}
                     component="div"
                     count={rows.length}
                     rowsPerPage={rowsPerPage}
@@ -352,10 +379,14 @@ export default function EnhancedTable(props) {
                     onChangeRowsPerPage={handleChangeRowsPerPage}
                 />
             </Paper>
-            <FormControlLabel
-                control={<Switch checked={dense} onChange={handleChangeDense} />}
-                label="Dense padding"
-            />
+            {
+                /**
+                 *  <FormControlLabel
+                 control={<Switch checked={dense} onChange={handleChangeDense} />}
+                 label="Tabela enxuta"
+             />
+                 */
+            }
         </div>
     );
 }
@@ -383,6 +414,7 @@ const createRow = (row, isItemSelected, labelId, onClickHandle) => {
     const rowKeys = Object.keys(row);
     return (
         <TableRow
+            key={`${row.id}`}
             hover
             onClick={event => onClickHandle(event, row.id)}
 

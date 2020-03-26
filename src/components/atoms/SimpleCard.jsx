@@ -5,6 +5,23 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
+import Bb from "../../assets/bb.png";
+import Bradesco from "../../assets/bradesco.png";
+import Itau from "../../assets/itau.png";
+
+
+const SwitchIcon = ({ option, className }) => {
+    switch (option) {
+        case 0:
+            return <img className={className.img} src={Bb} alt={'imagem do banco do brasil'} />;
+        case 1:
+            return <img className={className.img} src={Bradesco} alt={'imagem do banco bradesco'} />;
+        case 2:
+            return <img className={className.img} src={Itau} alt={'imagem do banco itaú'} />;
+        default:
+            return '';
+    }
+}
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -12,9 +29,11 @@ const useStyles = makeStyles(theme => ({
     },
     paper: {
         padding: theme.spacing(2),
+        borderRadius: '0px 0px',
         margin: 'auto',
         width: '100%',
         marginBottom: theme.spacing(1),
+        boxShadow: theme.shadows[5],
     },
     image: {
         display: 'flex',
@@ -28,6 +47,7 @@ const useStyles = makeStyles(theme => ({
     },
     typographyGray: {
         color: lighten(theme.palette.common.black, 0.50),
+        fontSize: '1rem',
     },
     typographyPositive: {
         color: theme.palette.success.main,
@@ -40,26 +60,26 @@ const useStyles = makeStyles(theme => ({
 const SimpleCard = ({ content, description, icon, isPositive }) => {
     const classes = useStyles();
     return (
-            <Paper className={classes.paper}>
-                <Grid container spacing={2}>
-                    <Grid item className={classes.image} alignItems="center" justify="center">
-                        <img className={classes.img} src={icon()} alt={'imagem do banco'} />
+        <Paper className={classes.paper}>
+            <Grid container spacing={5}>
+                <Grid container item xs={6} sm={4} className={classes.image} alignItems="center" justify="center">
+                    <SwitchIcon className={classes} option={icon} />
+                </Grid>
+                <Grid container item xs={6} sm={8} direction="column" justify="center">
+                    <Grid item  >
+                        <Typography gutterBottom variant="body2" className={classes.typographyGray}>
+                            {description}
+                        </Typography>
                     </Grid>
-                    <Grid item xs={8} sm={10} direction="column" spacing={2} justify="center">
-                        <Grid item justify="center" alignItems="center">
-                            <Typography gutterBottom variant="body2" className={classes.typographyGray}>
-                                {description}
-                            </Typography>
-                        </Grid>
-                        <Grid item>
-                            <Typography gutterBottom variant="h6" align="right" className={clsx({ [classes.typographyPositive]: isPositive,[classes.typographyNegative]: !isPositive,  })}>
-                                {content}
-                            </Typography>
-                        </Grid>
+                    <Grid item>
+                        <Typography gutterBottom variant="h6" align="right" className={clsx({ [classes.typographyPositive]: isPositive, [classes.typographyNegative]: !isPositive, })}>
+                            {content}
+                        </Typography>
                     </Grid>
                 </Grid>
+            </Grid>
 
-            </Paper>
+        </Paper>
     );
 }
 
@@ -67,7 +87,7 @@ const SimpleCard = ({ content, description, icon, isPositive }) => {
 SimpleCard.propTypes = {
     content: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
-    icon: PropTypes.func.isRequired,
+    icon: PropTypes.number.isRequired,
     isPositive: PropTypes.bool,
 }
 

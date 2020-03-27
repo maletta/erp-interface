@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
         margin: 'auto',
         width: '100%',
         marginBottom: theme.spacing(1),
-        boxShadow: theme.shadows[5],
+        boxShadow: theme.shadows[1],
     },
     image: {
         display: 'flex',

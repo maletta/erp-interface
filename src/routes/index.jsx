@@ -11,6 +11,8 @@ import EnhancedTable from "../components/pages/test/TablePage2";
 import TestPage from "../components/pages/test";
 import CardPage from "../components/pages/test/CardPage";
 import ContasAPagar from "../components/pages/ContasAPagar";
+import ContasAPagarAlteracao from "../components/pages/ContasAPagarAlteracao";
+
 
 
 
@@ -28,6 +30,7 @@ const AppRouter = ({children}) => {
           <Route path={"/table2"}> <EnhancedTable/> </Route>
           <Route path={"/card"}> <CardPage/> </Route>
           <Route path={"/contas-a-pagar"}> <ContasAPagar/> </Route>
+          <Route path={"/contas-a-pagar-alteracao"}> <ContasAPagarAlteracao/> </Route>
           <Route exact path={"/"} > <TestPage/> </Route>
 
           <Private>

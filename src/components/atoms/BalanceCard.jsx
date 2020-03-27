@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
     paper: {
         padding: theme.spacing(2),
         borderRadius: '0px 0px',
-        boxShadow: theme.shadows[5],
+        boxShadow: theme.shadows[1],
         flexGrow: 1,
         height: '100%',
     },

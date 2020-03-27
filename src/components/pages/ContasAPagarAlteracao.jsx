@@ -5,7 +5,10 @@ import Table, { createHeadersData } from "../../components/molecules/Table";
 import BodyScrollHidden from "../../components/atoms/BodyScrollHidden";
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper'
 import { makeStyles } from '@material-ui/core/styles';
+import { Typography } from "@material-ui/core";
+import MainAppBar from "../atoms/MainAppBar";
 
 
 const optionsList = [
@@ -84,66 +87,36 @@ const simpleCard = [
     },
 ];
 
-
-const useStyles = makeStyles(theme => (
-    {
-        root: {
-            height: '100vh',
-            backgroundColor: 'green',
-
-        },
-        child: {
-            width: '100%',
-            backgroundColor: 'blue',
-            height: '10%',
-        },
-        child2: {
-            width: '100%',
-            backgroundColor: 'pink',
-            height: '100%',
-        }
+const useStyle = makeStyles(theme => ({
+    root: {
+        borderRadius: '0px 0px',
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.common.white,
+        height: '7vh',
+        display: 'flex',
+        alignItems: 'center',
+        padding: '0px 8px 0px 8px',
+        boxShadow: theme.shadows[1],
+    },
+    sideBar: {
+        marginTop: theme.spacing(1),
     }
-));
+}));
 
-/**
- * <Table rows={data} header={createHeadersData(data)} />
-   <Grid container >
- <Grid item xs={9} sm={8}>
-     
- </Grid>
- <Grid item xs={3} sm={4}>
- <SimpleSidebar simpleCard={simpleCard} balanceCard={balanceCard} />
- </Grid>
-</Grid>
- */
+const ContasApagarAlteracao = () => {
 
-// <IconsPalette options={optionsList} />
-
-{
-    /**
-     *   <div className={classes.root}>
-            <div className={classes.child}>
-                1
-            </div>
-            <div className={classes.child2}>
-                2
-            </div>
-
-        </div>
-     * 
-     */
-}
-// document.body.style.overflowX = "hidden";
-const ContasAPagar = () => {
-    const classes = useStyles();
+    const classes = useStyle();
     return (
         <BodyScrollHidden>
-            <IconsPalette options={optionsList} />
+            <MainAppBar />
+            <Paper className={classes.root}>
+                <Typography variant="h5">Contas a pagar</Typography>
+            </Paper>
             <Grid container spacing={1} >
                 <Grid item xs={9} sm={9} >
-                    <Table rows={data} header={createHeadersData(data)} paginationHeight={'8vh'} tableHeight={'73vh'} toolbarHeight={'9vh'} />
+
                 </Grid>
-                <Grid container item xs={3} sm={3} alignContent="flex-start">
+                <Grid container item xs={3} sm={3} className={classes.sideBar} alignContent="flex-start">
                     <SimpleSidebar simpleCard={simpleCard} balanceCard={balanceCard} />
                 </Grid>
             </Grid>
@@ -151,4 +124,4 @@ const ContasAPagar = () => {
     );
 }
 
-export default ContasAPagar;
+export default ContasApagarAlteracao;

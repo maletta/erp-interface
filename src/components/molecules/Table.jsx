@@ -23,10 +23,10 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 
 /*
-TotalHeight = 85vh
+TotalHeight = 90vh
 {
-    Toobal: 9vh
-    TableContainer: 68vh
+    Toobar: 9vh
+    TableContainer: 73vh
     TalePagination: 8vh
 }
 */
@@ -135,31 +135,32 @@ EnhancedTableHead.propTypes = {
 };
 
 
-const useToolbarStyles = makeStyles(theme => ({
-    root: {
-        paddingLeft: theme.spacing(2),
-        paddingRight: theme.spacing(1),
-        height: '9vh',
-    },
-    highlight:
-        theme.palette.type === 'light'
-            ? {
-                color: theme.palette.secondary.main,
-                backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-            }
-            : {
-                color: theme.palette.text.primary,
-                backgroundColor: theme.palette.secondary.dark,
-            },
-    title: {
-        flex: '1 1 100%',
-    },
-}));
+const useToolbarStyles = ({ toolbarHeight }) => {
+    return makeStyles(theme => ({
+        root: {
+            paddingLeft: theme.spacing(2),
+            paddingRight: theme.spacing(1),
+            height: toolbarHeight, //'9vh'
+        },
+        highlight:
+            theme.palette.type === 'light'
+                ? {
+                    color: theme.palette.secondary.main,
+                    backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+                }
+                : {
+                    color: theme.palette.text.primary,
+                    backgroundColor: theme.palette.secondary.dark,
+                },
+        title: {
+            flex: '1 1 100%',
+        },
+    }));
+}
 
 const EnhancedTableToolbar = props => {
-    const classes = useToolbarStyles();
-    const { numSelected, title } = props;
-
+    const { numSelected, title, toolbarHeight } = props;
+    const classes = useToolbarStyles({toolbarHeight:toolbarHeight})();
     return (
         <Toolbar
             className={clsx(classes.root, {
@@ -189,7 +190,7 @@ const EnhancedTableToolbar = props => {
                                 <FilterListIcon />
                             </IconButton>
                         </Tooltip>
-                        <OutlinedInput placeholder="pesquisar"/>
+                        <OutlinedInput placeholder="pesquisar" />
                     </React.Fragment>
                 )}
         </Toolbar>
@@ -199,54 +200,58 @@ const EnhancedTableToolbar = props => {
 EnhancedTableToolbar.propTypes = {
     numSelected: PropTypes.number.isRequired,
     title: PropTypes.string,
-
+    toolbarHeight: PropTypes.string,
 };
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        width: '100%',
-        maxHeight: '100%',
-        "& .MuiTableSortLabel-root": {
-            color: theme.palette.primary.main,
-            "&:hover": {
-                color: theme.palette.common.black,
-            }
+const useStyles = ({ paginationHeight, tableHeight }) => {
+    console.log('paginationHeight, tableHeight ', paginationHeight, tableHeight);
+
+    return makeStyles(theme => ({
+        root: {
+            width: '100%',
+            maxHeight: '100%',
+            "& .MuiTableSortLabel-root": {
+                color: theme.palette.primary.main,
+                "&:hover": {
+                    color: theme.palette.common.black,
+                }
+            },
+            "& .MuiTableSortLabel-active": {
+                color: theme.palette.primary.main,
+            },
         },
-        "& .MuiTableSortLabel-active": {
-            color: theme.palette.primary.main,
+        paper: {
+            borderRadius: '0px 0px',
+            width: '100%',
+            height: '100%',
+            // marginBottom: theme.spacing(2),
+            boxShadow: theme.shadows[3],
+            padding: '0px 4px 0px 4px',
         },
-    },
-    paper: {
-        borderRadius: '0px 0px',
-        width: '100%',
-        height: '100%',
-        // marginBottom: theme.spacing(2),
-        boxShadow: theme.shadows[3],
-        padding: '0px 4px 0px 4px',
-    },
-    table: {
-        /* minWidth: 750, */
-    },
-    tableContainer: {
-        height: '68vh',
-    },
-    tablePagination: {
-        height: '8vh',
-        minHeight: '50px',
-        overflow: 'hidden',
-    },
-    visuallyHidden: {
-        border: 0,
-        clip: 'rect(0 0 0 0)',
-        height: 1,
-        margin: -1,
-        overflow: 'hidden',
-        padding: 0,
-        position: 'absolute',
-        top: 20,
-        width: 1,
-    },
-}));
+        table: {
+            /* minWidth: 750, */
+        },
+        tableContainer: {
+            height: tableHeight,// '73vh'
+        },
+        tablePagination: {
+            height: paginationHeight,// '8vh'
+            minHeight: '50px',
+            overflow: 'hidden',
+        },
+        visuallyHidden: {
+            border: 0,
+            clip: 'rect(0 0 0 0)',
+            height: 1,
+            margin: -1,
+            overflow: 'hidden',
+            padding: 0,
+            position: 'absolute',
+            top: 20,
+            width: 1,
+        },
+    }));
+};
 
 const useStyledTableBody = makeStyles(theme => ({
     root: {
@@ -268,8 +273,9 @@ const useStyledTableBody = makeStyles(theme => ({
 
 
 export default function EnhancedTable(props) {
-    const { rows, header } = props;
-    const classes = useStyles();
+    const { rows, header, paginationHeight, tableHeight, toolbarHeight } = props;
+    console.log('table props', { paginationHeight, tableHeight, toolbarHeight })
+    const classes = useStyles({ paginationHeight, tableHeight })();
     const classesTableBody = useStyledTableBody();
     const [orderAscDesc, setOrderAscDesc] = React.useState('asc');
     const [orderByColumn, setOrderBy] = React.useState('empresa');
@@ -333,7 +339,7 @@ export default function EnhancedTable(props) {
     return (
         <div className={classes.root}>
             <Paper className={classes.paper}>
-                <EnhancedTableToolbar numSelected={selected.length} />
+                <EnhancedTableToolbar numSelected={selected.length} toolbarHeight={toolbarHeight} />
                 <TableContainer className={classes.tableContainer}>
                     <TableUI
                         className={classes.table}
@@ -363,7 +369,7 @@ export default function EnhancedTable(props) {
                                         createRow(row, isItemSelected, labelId, handleClick)
                                     );
                                 })}
-                            {createTableBodyFill(header, emptyRows, dense)}
+                            {/* createTableBodyFill(header, emptyRows, dense) */}{/* criar linhas vazias para preencher tabela */}
                         </TableBody>
                     </TableUI>
                 </TableContainer>
@@ -380,7 +386,7 @@ export default function EnhancedTable(props) {
                 />
             </Paper>
             {
-                /**
+                /**Controle para alternar altura das linhas da tabela 
                  *  <FormControlLabel
                  control={<Switch checked={dense} onChange={handleChangeDense} />}
                  label="Tabela enxuta"
@@ -391,11 +397,19 @@ export default function EnhancedTable(props) {
     );
 }
 
+EnhancedTable.defaultProps = {
+    paginationHeight: '8vh',
+    tableHeight: '73vh',
+    toolbarHeight: '9vh'
 
+}
 
 EnhancedTable.propTypes = {
     rows: PropTypes.array.isRequired,
     header: PropTypes.array.isRequired,
+    paginationHeight: PropTypes.string,
+    tableHeight: PropTypes.string,
+    toolbarHeight: PropTypes.string,
 
 }
 

@@ -15,9 +15,6 @@ import clsx from "clsx";
 
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-  },
   menuButton: {
     // marginRight: theme.spacing(2),
     borderRadius: '0px 0px',

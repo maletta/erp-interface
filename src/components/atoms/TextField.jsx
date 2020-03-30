@@ -52,8 +52,8 @@ const useStylesLabel = makeStyles(theme => (
 ));/* ,{ name: 'MuiInputLabel' }  to edit all*/
 
 
-const TextField = (props) => {
-    const inputClasses = makeStyles(theme => mountInputStyles(theme, props.color))();
+const TextField = ({color, ...props}) => {
+    const inputClasses = makeStyles(theme => mountInputStyles(theme, color))();
     const InputProps = {
         classes: {
             root: inputClasses.root,

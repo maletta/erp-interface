@@ -6,8 +6,9 @@ import Tab from '@material-ui/core/Tab';
 
 
 const appearance = {
-    standard: 'standard',
-    filled: 'filled',
+    firstLevel: 'firstLevel',
+    secondLevel: 'secondLevel',
+    thirdLevel: 'thirdLevel',
 }
 
 function a11yProps(index) {
@@ -20,7 +21,7 @@ function a11yProps(index) {
 
 
 const switchAppearence = (theme, option) => {
-    const newTheme = (backgroundMain, backgroundSecondary,colorMain,colorSecondary) => ({
+    const newTheme = (backgroundMain, backgroundSecondary, colorMain, colorSecondary) => ({
         backgroundMain,
         backgroundSecondary,
         colorMain,
@@ -28,14 +29,21 @@ const switchAppearence = (theme, option) => {
     });
 
     switch (option) {
-        case appearance.standard:
+        case appearance.firstLevel:
             return newTheme(
                 theme.palette.common.white,
                 theme.palette.primary.main,
                 theme.palette.common.white,
                 theme.palette.primary.main,
             );
-        case appearance.filled:
+        case appearance.secondLevel:
+            return newTheme(
+                theme.palette.primary.light,
+                theme.palette.primary.main,
+                theme.palette.common.white,
+                theme.palette.common.black,
+            );
+        case appearance.thirdLevel:
             return newTheme(
                 theme.palette.primary.light,
                 theme.palette.primary.main,
@@ -52,7 +60,7 @@ const switchAppearence = (theme, option) => {
     }
 }
 
-const useStyle = appearance => makeStyles( theme => ({
+const useStyle = appearance => makeStyles(theme => ({
     root: {
         flexGrow: 1,
         backgroundColor: appearance.backgroundMain,
@@ -119,7 +127,7 @@ const Tabs = ({ currentValue, handleClick, tabsOptions, variant }) => {
 Tabs.defaultProps = {
     currentValue: 0,
     tabsOptions: [],
-    variant: appearance.standard,
+    variant: appearance.firstLevel,
 }
 
 Tabs.propTypes = {

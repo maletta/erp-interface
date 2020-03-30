@@ -140,7 +140,7 @@ const useToolbarStyles = ({ toolbarHeight }) => {
         root: {
             paddingLeft: theme.spacing(2),
             paddingRight: theme.spacing(1),
-            height: toolbarHeight, //'9vh'
+            // height: toolbarHeight, //'9vh'
         },
         highlight:
             theme.palette.type === 'light'
@@ -160,7 +160,7 @@ const useToolbarStyles = ({ toolbarHeight }) => {
 
 const EnhancedTableToolbar = props => {
     const { numSelected, title, toolbarHeight } = props;
-    const classes = useToolbarStyles({toolbarHeight:toolbarHeight})();
+    const classes = useToolbarStyles({ toolbarHeight: toolbarHeight })();
     return (
         <Toolbar
             className={clsx(classes.root, {
@@ -232,10 +232,10 @@ const useStyles = ({ paginationHeight, tableHeight }) => {
             /* minWidth: 750, */
         },
         tableContainer: {
-            height: tableHeight,// '73vh'
+            //height: tableHeight,// '73vh'
         },
         tablePagination: {
-            height: paginationHeight,// '8vh'
+            //height: paginationHeight,// '8vh'
             minHeight: '50px',
             overflow: 'hidden',
         },
@@ -273,7 +273,7 @@ const useStyledTableBody = makeStyles(theme => ({
 
 
 export default function EnhancedTable(props) {
-    const { rows, header, paginationHeight, tableHeight, toolbarHeight } = props;
+    const { rows, showTableToolbar, header, paginationHeight, tableHeight, toolbarHeight } = props;
     console.log('table props', { paginationHeight, tableHeight, toolbarHeight })
     const classes = useStyles({ paginationHeight, tableHeight })();
     const classesTableBody = useStyledTableBody();
@@ -339,7 +339,10 @@ export default function EnhancedTable(props) {
     return (
         <div className={classes.root}>
             <Paper className={classes.paper}>
-                <EnhancedTableToolbar numSelected={selected.length} toolbarHeight={toolbarHeight} />
+                { 
+                 showTableToolbar && <EnhancedTableToolbar numSelected={selected.length} toolbarHeight={toolbarHeight} />
+                }
+
                 <TableContainer className={classes.tableContainer}>
                     <TableUI
                         className={classes.table}
@@ -406,6 +409,7 @@ EnhancedTable.defaultProps = {
 
 EnhancedTable.propTypes = {
     rows: PropTypes.array.isRequired,
+    showTableToolbar: PropTypes.any,
     header: PropTypes.array.isRequired,
     paginationHeight: PropTypes.string,
     tableHeight: PropTypes.string,

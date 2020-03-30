@@ -14,8 +14,9 @@ const useStyle = makeStyles(theme => ({
     root: {
         flexGrow: 1,
         backgroundColor: theme.palette.background.paper,
-        overflowY: 'auto',
-        overflowX: 'hidden',
+        //overflowY: 'auto',
+        //overflowX: 'auto',
+        height: '100%',
     },
     tabPabelTitle: {
         marginBottom: theme.spacing(3),
@@ -68,13 +69,16 @@ const TabPanel = ({ children, currentValue, index, handleAttach, handleCancel, h
     const haveSeparator = haveTopButtons(...functions);
     return (
         <div className={clsx({ [classes.root]: true, [classes.separator]: haveSeparator })} hidden={currentValue !== index} >
-            <TabPanelTitle classes={classes}
-                handleAttach={handleAttach}
-                handleCancel={handleCancel}
-                handleDelete={handleDelete}
-                handleSave={handleSave}
-                title={title}
-            />
+           {
+               (haveSeparator || title) &&
+               <TabPanelTitle classes={classes}
+               handleAttach={handleAttach}
+               handleCancel={handleCancel}
+               handleDelete={handleDelete}
+               handleSave={handleSave}
+               title={title}
+           />
+           }
 
             {children}
         </div>

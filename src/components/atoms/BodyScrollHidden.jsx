@@ -7,10 +7,10 @@ import PropTypes from 'prop-types';
 // Aparentemente o componente <Grid container> que gera spacing negativo 
 const BodyScrollHidden = ({ children }) => {
     useEffect(() => {
-        document.body.style.overflow = "hidden";
+        //document.body.style.overflow = "hidden";
 
         return function adjustBody() {
-            document.body.style.overflow = "inherit";
+            //document.body.style.overflow = "inherit";
         }
     });
 

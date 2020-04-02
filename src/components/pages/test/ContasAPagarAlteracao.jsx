@@ -11,7 +11,6 @@ import Paper from '@material-ui/core/Paper'
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from "@material-ui/core";
 import MainAppBar from "../../atoms/MainAppBar";
-import TitleBar from "../../atoms/TitleBar";
 import TextField from "../../atoms/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import { iconOptions } from "../../atoms/SquaredIcon";
@@ -201,8 +200,10 @@ const TestPage = () => {
 
     return (
         <BodyScrollHidden>
-            <MainAppBar height={'5vh'}/>
-            <TitleBar label={'Contas a pagar'} height={'5vh'} />
+            <MainAppBar />
+            <Paper className={classes.root}>
+                <Typography variant="h5">Contas a pagar</Typography>
+            </Paper>
             {/* Tab principal */}
             <Grid container spacing={1} className={classes.background}>
                 {/* Grid  conteúdo principal*/}

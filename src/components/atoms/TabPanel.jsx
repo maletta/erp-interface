@@ -16,10 +16,14 @@ const useStyle = makeStyles(theme => ({
         backgroundColor: theme.palette.background.paper,
         //overflowY: 'auto',
         //overflowX: 'auto',
-        height: '100%',
+        width: '100%',
+        //display: 'flex',
+        //flexDirection: 'column',
     },
     tabPabelTitle: {
-        marginBottom: theme.spacing(3),
+        marginBottom: theme.spacing(1),
+        height: '48px',
+        maxHeight: '48px',
     },
     title: {
         color: theme.palette.primary.main,

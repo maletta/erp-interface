@@ -12,6 +12,8 @@ import TestPage from "../components/pages/test";
 import CardPage from "../components/pages/test/CardPage";
 import ContasAPagar from "../components/pages/ContasAPagar";
 import ContasAPagarAlteracao from "../components/pages/ContasAPagarAlteracao";
+import NovoLayout from "../components/pages/test/NovoLayout";
+
 
 
 
@@ -31,7 +33,7 @@ const AppRouter = ({children}) => {
           <Route path={"/card"}> <CardPage/> </Route>
           <Route path={"/contas-a-pagar"}> <ContasAPagar/> </Route>
           <Route path={"/contas-a-pagar-alteracao"}> <ContasAPagarAlteracao/> </Route>
-          <Route exact path={"/"} > <TestPage/> </Route>
+          <Route exact path={"/"} > <NovoLayout/> </Route>
 
           <Private>
             <Switch>

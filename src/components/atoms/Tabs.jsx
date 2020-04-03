@@ -65,6 +65,8 @@ const useStyle = appearance => makeStyles(theme => ({
         flexGrow: 1,
         backgroundColor: appearance.backgroundMain,
         width: '100%',
+        height: '48px',
+        maxHeight: '48px',
         boxShadow: theme.shadows[1],
     },
     tabs: {

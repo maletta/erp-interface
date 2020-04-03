@@ -18,7 +18,7 @@ import { makeStyles, lighten } from '@material-ui/core/styles';
 const useStyles = props => (makeStyles(theme => ({
   appBar: {
     backgroundColor: theme.palette.common.white,
-    boxShadow: theme.shadows[1],
+    boxShadow: theme.shadows[0],
     height: props.height,
     padding: '0px 2px 0px 2px',
   },

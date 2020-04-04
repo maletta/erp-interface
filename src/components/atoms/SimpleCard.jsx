@@ -28,12 +28,13 @@ const useStyles = makeStyles(theme => ({
         flexGrow: 1,
     },
     paper: {
-        padding: theme.spacing(2),
+        padding: theme.spacing(1),
         borderRadius: '0px 0px',
         margin: 'auto',
         width: '100%',
         marginBottom: theme.spacing(1),
         boxShadow: theme.shadows[1],
+        maxHeight: '80px',
     },
     image: {
         display: 'flex',
@@ -43,7 +44,7 @@ const useStyles = makeStyles(theme => ({
         display: 'block',
         //maxWidth: '100%',
         //maxHeight: '100%',
-        width: '88px',
+        width: '44px',
     },
     typographyGray: {
         color: lighten(theme.palette.common.black, 0.50),

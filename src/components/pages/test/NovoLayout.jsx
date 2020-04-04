@@ -297,7 +297,7 @@ const NovoLayout = () => {
                                                 label="Título"
                                                 defaultValue="123213123"
                                                 helperText=" "
-                                                variant="outlined"
+                                                variant="filled"
                                                 fullWidth
                                             />
                                         </Grid>
@@ -307,7 +307,7 @@ const NovoLayout = () => {
                                                 label="Parcela"
                                                 defaultValue="01/12"
                                                 helperText=" "
-                                                variant="outlined"
+                                                variant="filled"
                                                 fullWidth
                                             />
                                         </Grid>
@@ -319,7 +319,7 @@ const NovoLayout = () => {
                                                 // value={currency}
                                                 // onChange={handleChange}
                                                 helperText=" "
-                                                variant="outlined"
+                                                variant="filled"
                                                 fullWidth
                                             >
                                                 {currencies.map(option => (
@@ -335,7 +335,7 @@ const NovoLayout = () => {
                                                 label="Situação"
                                                 defaultValue="123213123"
                                                 helperText=" "
-                                                variant="outlined"
+                                                variant="filled"
                                                 color="success"
                                                 fullWidth
                                             />
@@ -348,7 +348,7 @@ const NovoLayout = () => {
                                                 // value={currency}
                                                 // onChange={handleChange}
                                                 helperText=" "
-                                                variant="outlined"
+                                                variant="filled"
                                                 fullWidth
                                             >
                                                 {currencies.map(option => (
@@ -370,7 +370,7 @@ const NovoLayout = () => {
                                                 // value={currency}
                                                 // onChange={handleChange}
                                                 helperText=" "
-                                                variant="outlined"
+                                                variant="filled"
                                                 fullWidth
                                             >
                                                 {currencies.map(option => (
@@ -388,7 +388,7 @@ const NovoLayout = () => {
                                                 // value={currency}
                                                 // onChange={handleChange}
                                                 helperText=" "
-                                                variant="outlined"
+                                                variant="filled"
                                                 fullWidth
                                             >
                                                 {currencies.map(option => (
@@ -424,6 +424,7 @@ const NovoLayout = () => {
                                                                 }}
                                                                 helperText=" "
                                                                 disabled
+                                                                variant="filled"
                                                             />
                                                         </Grid>
                                                         <Grid item xs={3} sm={3}>
@@ -438,6 +439,7 @@ const NovoLayout = () => {
                                                                 }}
                                                                 helperText=" "
                                                                 disabled
+                                                                variant="filled"
                                                             />
                                                         </Grid>
                                                         <Grid item xs={3} sm={3}>
@@ -449,6 +451,7 @@ const NovoLayout = () => {
                                                                 fullWidth
                                                                 helperText=" "
                                                                 disabled
+                                                                variant="filled"
                                                             />
                                                         </Grid>
                                                         <Grid item xs={3} sm={3}>
@@ -460,6 +463,7 @@ const NovoLayout = () => {
                                                                 fullWidth
                                                                 helperText=" "
                                                                 disabled
+                                                                variant="filled"
                                                             />
                                                         </Grid>
                                                     </Grid>
@@ -473,6 +477,7 @@ const NovoLayout = () => {
                                                                 defaultValue="Customização"
                                                                 helperText=" "
                                                                 fullWidth
+                                                                variant="filled"
                                                             />
                                                         </Grid>
                                                     </Grid>
@@ -486,8 +491,8 @@ const NovoLayout = () => {
                                                                 type="textarea"
                                                                 defaultValue="Pedir para colocar como DDA"
                                                                 helperText=" "
-
                                                                 fullWidth
+                                                                variant="filled"
                                                             />
                                                         </Grid>
                                                     </Grid>
@@ -506,11 +511,11 @@ const NovoLayout = () => {
                                                         {/* Grid largura do input */}
                                                         <Grid item xs={2} sm={2}>
                                                             <TextField
-                                                                id="date"
                                                                 label="PIS"
                                                                 defaultValue="0,00"
                                                                 fullWidth
                                                                 helperText=" "
+                                                                variant="filled"
                                                             />
                                                         </Grid>
                                                         <Grid item xs={2} sm={2}>
@@ -519,8 +524,8 @@ const NovoLayout = () => {
                                                                 label="IR"
                                                                 defaultValue="0,00"
                                                                 fullWidth
-
                                                                 helperText=" "
+                                                                variant="filled"
                                                             />
                                                         </Grid>
                                                         <Grid item xs={3} sm={3}>
@@ -534,6 +539,7 @@ const NovoLayout = () => {
                                                                     shrink: true,
                                                                 }}
                                                                 helperText=" "
+                                                                variant="filled"
                                                             />
                                                         </Grid>
                                                         <Grid item xs={3} sm={3}>
@@ -544,7 +550,7 @@ const NovoLayout = () => {
                                                                 // value={currency}
                                                                 // onChange={handleChange}
                                                                 helperText=" "
-                                                                variant="outlined"
+                                                                variant="filled"
                                                                 fullWidth
                                                             >
                                                                 {currencies.map(option => (
@@ -563,6 +569,7 @@ const NovoLayout = () => {
                                                                 fullWidth
                                                                 helperText=" "
                                                                 disabled
+                                                                variant="filled"
                                                             />
                                                         </Grid>
                                                     </Grid>
@@ -576,6 +583,7 @@ const NovoLayout = () => {
                                                                 defaultValue="0,00"
                                                                 fullWidth
                                                                 helperText=" "
+                                                                variant="filled"
                                                             />
                                                         </Grid>
                                                         <Grid item xs={2} sm={2}>
@@ -584,8 +592,8 @@ const NovoLayout = () => {
                                                                 label="ISS"
                                                                 defaultValue="0,00"
                                                                 fullWidth
-
                                                                 helperText=" "
+                                                                variant="filled"
                                                             />
                                                         </Grid>
                                                         <Grid item xs={3} sm={3}>
@@ -596,7 +604,7 @@ const NovoLayout = () => {
                                                                 // value={currency}
                                                                 // onChange={handleChange}
                                                                 helperText=" "
-                                                                variant="outlined"
+                                                                variant="filled"
                                                                 fullWidth
                                                             >
                                                                 {currencies.map(option => (
@@ -614,7 +622,7 @@ const NovoLayout = () => {
                                                                 // value={currency}
                                                                 // onChange={handleChange}
                                                                 helperText=" "
-                                                                variant="outlined"
+                                                                variant="filled"
                                                                 fullWidth
                                                             >
                                                                 {currencies.map(option => (
@@ -633,6 +641,7 @@ const NovoLayout = () => {
                                                                 fullWidth
                                                                 helperText=" "
                                                                 disabled
+                                                                variant="filled"
                                                             />
                                                         </Grid>
                                                     </Grid>
@@ -647,6 +656,7 @@ const NovoLayout = () => {
                                                                 defaultValue="0,00"
                                                                 fullWidth
                                                                 helperText=" "
+                                                                variant="filled"
                                                             />
                                                         </Grid>
                                                         <Grid item xs={2} sm={2}>
@@ -656,6 +666,7 @@ const NovoLayout = () => {
                                                                 defaultValue="0,00"
                                                                 fullWidth
                                                                 helperText=" "
+                                                                variant="filled"
                                                             />
                                                         </Grid>
                                                         <Grid item xs={3} sm={3}>
@@ -664,7 +675,7 @@ const NovoLayout = () => {
                                                                 label="Contribuinte"
                                                                 defaultValue="0,00"
                                                                 helperText=" "
-                                                                variant="outlined"
+                                                                variant="filled"
                                                                 fullWidth
                                                             />
                                                         </Grid>
@@ -674,7 +685,7 @@ const NovoLayout = () => {
                                                                 label="Valor arrecadação"
                                                                 defaultValue="0,00"
                                                                 helperText=" "
-                                                                variant="outlined"
+                                                                variant="filled"
                                                                 fullWidth
                                                             />
                                                         </Grid>
@@ -687,6 +698,7 @@ const NovoLayout = () => {
                                                                 fullWidth
                                                                 helperText=" "
                                                                 disabled
+                                                                variant="filled"
                                                             />
                                                         </Grid>
                                                     </Grid>
@@ -713,7 +725,7 @@ const NovoLayout = () => {
                                         {/* Quarta TabPanel secundária  */}
                                         <TabPanel index={secondaryTabsOptions[3].index} currentValue={secondaryTab}
                                             handleDelete={handleSecondaryTabAttach} handleSave={handleSecondaryTabAttach}>
-                                            <div className={clsx({[classes.secondaryPanelContent]: true, [classes.panelCorrectHeight]:true})}>
+                                            <div className={clsx({ [classes.secondaryPanelContent]: true, [classes.panelCorrectHeight]: true })}>
                                                 <Grid item xs={12} sm={12} >
                                                     <Table rows={dataBaixas} header={createHeadersData(dataBaixas)} paginationHeight={'8vh'} tableHeight={'73vh'} toolbarHeight={'9vh'} />
                                                 </Grid>
@@ -741,7 +753,8 @@ const NovoLayout = () => {
                                                 InputLabelProps={{
                                                     shrink: true,
                                                 }}
-                                            />
+                                                variant="filled"
+                                                />
                                         </Grid>
                                         <Grid container item xs={12} sm={12}>
                                             <TextField
@@ -754,7 +767,8 @@ const NovoLayout = () => {
                                                 InputLabelProps={{
                                                     shrink: true,
                                                 }}
-                                            />
+                                                variant="filled"
+                                                />
                                         </Grid>
                                         <Grid container item xs={12} sm={12}>
                                             <TextField
@@ -762,7 +776,7 @@ const NovoLayout = () => {
                                                 label="Valor Original"
                                                 defaultValue="1500,00"
                                                 helperText=""
-                                                variant="outlined"
+                                                variant="filled"
                                                 fullWidth
                                             />
                                         </Grid>
@@ -772,7 +786,7 @@ const NovoLayout = () => {
                                                 label="Valor Impostos"
                                                 defaultValue="270,00"
                                                 helperText=""
-                                                variant="outlined"
+                                                variant="filled"
                                                 fullWidth
                                             />
                                         </Grid>
@@ -782,7 +796,7 @@ const NovoLayout = () => {
                                                 label="Valor Desconto"
                                                 defaultValue="50,00"
                                                 helperText=""
-                                                variant="outlined"
+                                                variant="filled"
                                                 fullWidth
                                             />
                                         </Grid>
@@ -792,7 +806,7 @@ const NovoLayout = () => {
                                                 label="Valor Abatimento"
                                                 defaultValue="0,00"
                                                 helperText=""
-                                                variant="outlined"
+                                                variant="filled"
                                                 fullWidth
                                             />
                                         </Grid>
@@ -802,7 +816,7 @@ const NovoLayout = () => {
                                                 label="Valor Pago"
                                                 defaultValue="0,00"
                                                 helperText=""
-                                                variant="outlined"
+                                                variant="filled"
                                                 fullWidth
                                             />
                                         </Grid>
@@ -812,7 +826,7 @@ const NovoLayout = () => {
                                                 label="Valor Saldo"
                                                 defaultValue="1720,00"
                                                 helperText=""
-                                                variant="outlined"
+                                                variant="filled"
                                                 fullWidth
                                             />
                                         </Grid>

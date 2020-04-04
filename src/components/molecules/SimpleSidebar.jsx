@@ -12,6 +12,7 @@ const useStyles = makeStyles(theme => (
             padding: theme.spacing(1),
             paddingTop: '0px',
             paddingRight: '4px',
+            overflowX: 'hidden',
         },
     }
 ));

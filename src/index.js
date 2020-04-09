@@ -4,11 +4,16 @@ import ReactDOM from "react-dom";
 import Provider from "./store";
 import AppRouter from "./routes";
 import CssBaseline from '@material-ui/core/CssBaseline';
-import {ThemeProvider, createMuiTheme} from '@material-ui/core/'
+import { ThemeProvider, createMuiTheme, responsiveFontSizes } from '@material-ui/core/';
 
 
 const theme = createMuiTheme({
   overrides: {
+    // MuiCssBaseline: {
+    //   '@global': {
+    //     fontSize: 2 
+    //   },
+    // },
   },
   palette: {
     type: "light",
@@ -28,8 +33,8 @@ const theme = createMuiTheme({
 
 ReactDOM.render(
   <Provider>
-    <ThemeProvider theme={theme}>
-    <CssBaseline />
+    <ThemeProvider theme={responsiveFontSizes(theme)}>
+      <CssBaseline />
       {
         // <App />
       }

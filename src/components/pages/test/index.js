@@ -228,7 +228,9 @@ const TestPage = () => {
                 </Grid>
                 {/* Grid barra lateral direita */}
                 <Grid container item xs={3} sm={3} className={classes.sideBar} alignContent="flex-start">
-                    <SimpleSidebar simpleCard={simpleCard} balanceCard={balanceCard} />
+                  
+                   <SimpleSidebar simpleCard={simpleCard} balanceCard={balanceCard} />
+                
                 </Grid>
             </Grid>
 

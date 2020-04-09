@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
     },
     typographyGray: {
         color: lighten(theme.palette.common.black, 0.50),
-        fontSize: '1rem',
+        fontSize: '1em',
     },
     typographyPositive: {
         color: theme.palette.success.main,
@@ -56,6 +56,11 @@ const useStyles = makeStyles(theme => ({
     typographyNegative: {
         color: theme.palette.error.main,
     },
+    responsiveFont: {
+        [theme.breakpoints.down('md')]: {
+            fontSize: '1em',
+        }
+    }
 }));
 
 const SimpleCard = ({ content, description, icon, isPositive }) => {
@@ -67,13 +72,15 @@ const SimpleCard = ({ content, description, icon, isPositive }) => {
                     <SwitchIcon className={classes} option={icon} />
                 </Grid>
                 <Grid container item xs={6} sm={8} direction="column" justify="center">
-                    <Grid item  >
+                    <Grid item className={classes.responsiveFont}>
                         <Typography gutterBottom variant="body2" className={classes.typographyGray}>
                             {description}
                         </Typography>
                     </Grid>
-                    <Grid item>
-                        <Typography gutterBottom variant="h6" align="right" className={clsx({ [classes.typographyPositive]: isPositive, [classes.typographyNegative]: !isPositive, })}>
+                    <Grid item className={classes.responsiveFont}>
+                        <Typography gutterBottom variant="subtitle1" align="right" 
+                        className={clsx({ [classes.typographyPositive]: isPositive, [classes.typographyNegative]: !isPositive, })}
+                        >
                             {content}
                         </Typography>
                     </Grid>

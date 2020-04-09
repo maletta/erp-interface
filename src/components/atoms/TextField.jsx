@@ -56,14 +56,14 @@ const inputVariantType = {
 }
 
 
-function mountInputStyles(theme, paletteColor, variant = "filled") {
+export function mountInputStyles(theme, paletteColor, variant = "filled") {
     console.log('variant ', variant);
     const color = paletteColor ? paletteColor : 'primary';
     return inputVariantType[variant](theme, color);
 
 }
 
-const useStylesLabel = makeStyles(theme => (
+export const useStylesLabel = makeStyles(theme => (
     {
         root: {
             fontSize: '0.8rem',

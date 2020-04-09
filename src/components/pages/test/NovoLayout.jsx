@@ -1,6 +1,8 @@
 import React, { Fragment } from "react";
 import clsx from 'clsx';
+import DatePicker from "../../atoms/DatePicker";
 import IconsPalette from "../../molecules/IconsPalette";
+import MomentUtils from '@date-io/moment';
 import Tabs from "../../atoms/Tabs";
 import TabPanel from "../../atoms/TabPanel";
 import SimpleSidebar from "../../molecules/SimpleSidebar";
@@ -16,6 +18,7 @@ import TitleBar from "../../atoms/TitleBar";
 import TextField from "../../atoms/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import { iconOptions } from "../../atoms/SquaredIcon";
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 
 
 
@@ -178,673 +181,508 @@ const dataRateios = [
     createDataRateios(2, 2, '02/01/2020', '430,00', '25%'),
 ]
 
-const useStyle = props => makeStyles(theme => ({
-    root: {
-        display: 'flex',
-        flexDirection: 'column',
-        // backgroundColor: '#de3',
-        height: '100%',
-    },
-    content: {
-        // background: '#ede',
-        flexGrow: 1,
-        paddingTop: theme.spacing(1),
-    },
-    mainContent: {
-        backgroundColor: 'green',
-        display: 'flex',
-        flexDirection: 'row',
-        flexGrow: 1,
-        boxShadow: theme.shadows[6],
-    },
-    sideContent: {
-        // backgroundColor: 'crimson',
-        overflowY: 'auto',
-        maxHeight: 'calc(100vh - 40px - 0.5vh)',
-    },
-    gridRoot: {
-        // background: '#83d',
-        flexGrow: 1,
-        height: '100%',
-        paddingTop: theme.spacing(1),
-    },
-    formGroup: {
-        height: '100%',
-        marginTop: theme.spacing(1),
-    },
-    paddingLeft: {
-        paddingLeft: theme.spacing(1),
-    },
-    background: {
-        backgroundColor: 'green',
-        height: 'calc(100% - 10vh)',
-        padding: '0px 0px',
-        margin: '0px 0px',
-    },
-    marginTop: {
-        marginTop: theme.spacing(2),
-    },
-    flexbox: {
-        display: 'flex',
-        flexDirection: 'column',
-    },
-    panelContent: {
-        // backgroundColor: 'blue',
-        flexGrow: 1,
-        overflowY: 'auto',
-        maxHeight: 'calc(100vh - 48px - 40px - 40px - 10vh - 0.5vh)',
-    },
-    secondaryPanelContent: {
-        // backgroundColor: 'blue',
-        flexGrow: 1,
-        padding: theme.spacing(1),
-        overflowY: 'auto',
-        overflowX: 'hidden',
-        maxHeight: 'calc(40vh)',
-    },
-    panelCorrectHeight: {
-        maxHeight: 'calc(40vh - 48px)',
-    },
-    childContent: {
-        height: '200px',
-        backgroundColor: '#8ed',
-        marginBottom: '5px',
-    }
-}));
+const useStyle = props => {
+    return makeStyles(theme => {
+        console.log(theme.breakpoints.down('sm'));
+        return ({
+            root: {
+                display: 'flex',
+                flexDirection: 'column',
+                // backgroundColor: '#de3',
+                height: '100%',
+            },
+            content: {
+                // background: '#ede',
+                flexGrow: 1,
+                paddingTop: theme.spacing(1),
+            },
+            mainContent: {
+                backgroundColor: 'green',
+                display: 'flex',
+                flexDirection: 'row',
+                flexGrow: 1,
+                boxShadow: theme.shadows[6],
+            },
+            sideContent: {
+                // backgroundColor: 'crimson',
+                overflowY: 'auto',
+                maxHeight: 'calc(100vh - 40px - 0.5vh)',
+                [theme.breakpoints.down('sm')]:{
+                    display: 'none',
+                }
+            },
+            gridRoot: {
+                // background: '#83d',
+                flexGrow: 1,
+                height: '100%',
+                paddingTop: theme.spacing(1),
+            },
+            formGroup: {
+                height: '100%',
+                marginTop: theme.spacing(1),
+            },
+            paddingLeft: {
+                paddingLeft: theme.spacing(1),
+            },
+            background: {
+                backgroundColor: 'green',
+                height: 'calc(100% - 10vh)',
+                padding: '0px 0px',
+                margin: '0px 0px',
+            },
+            marginTop: {
+                marginTop: theme.spacing(2),
+            },
+            flexbox: {
+                display: 'flex',
+                flexDirection: 'column',
+            },
+            panelContent: {
+                // backgroundColor: 'blue',
+                flexGrow: 1,
+                overflowY: 'auto',
+                maxHeight: 'calc(100vh - 48px - 40px - 40px - 10vh - 0.5vh)',
+            },
+            secondaryPanelContent: {
+                // backgroundColor: 'blue',
+                flexGrow: 1,
+                padding: theme.spacing(1),
+                overflowY: 'auto',
+                overflowX: 'hidden',
+                maxHeight: 'calc(40vh)',
+            },
+            panelCorrectHeight: {
+                maxHeight: 'calc(40vh - 48px)',
+            },
+            childContent: {
+                height: '200px',
+                backgroundColor: '#8ed',
+                marginBottom: '5px',
+            }
+        })
+    })
+};
 
 
 const NovoLayout = () => {
     const classes = useStyle({})();
-    const [mainTab, setMainTab] = React.useState(1);
+    const [mainTab, setMainTab] = React.useState(0);
     const [secondaryTab, setSecondaryTab] = React.useState(0);
     const [rateiosTab, setRateiosTab] = React.useState(0);
     const handlePrimaryTabAttach = () => { };
     const handleSecondaryTabAttach = () => { };
+    
 
     return (
-        <div className={classes.root}>
-            <MainAppBar height={'40px'} />
-            <TitleBar label={'Contas a pagar'} height={'40px'} />
-            {/* Grid que agrupa o conteúdo principal e conteúdo lateral */}
-            <Grid container spacing={0} className={classes.gridRoot}>
-                {/* Grid com o conteúdo principal */}
-                <Grid container item xs={9} sm={9} className={classes.mainContent}>
-                    <Grid item xs={12} sm={12} className={classes.flexbox}>
-                        {/* Tabs - controlam painel exibido */}
-                        <Tabs tabsOptions={mainTabsOptions} currentValue={mainTab} handleClick={(props) => setMainTab(props)} />
-                        {/* Primeiro Painel */}
-                        <TabPanel index={mainTabsOptions[0].index} currentValue={mainTab} >
-                            <IconsPalette options={optionsList} />
-                            {/* div cria um box limitante e com scroll para tabela  */}
-                            <div className={classes.panelContent}>
-                                <Table rows={data} header={createHeadersData(data)} paginationHeight={'8vh'} tableHeight={'73vh'} toolbarHeight={'9vh'} />
-                            </div>
-                        </TabPanel>
-                        {/* Segundo Painel */}
-                        <TabPanel index={mainTabsOptions[1].index} currentValue={mainTab} title={'ALTERAÇÃO DO TÍTULO 123456 - DESIS'}
-                            handleAttach={handlePrimaryTabAttach} handleCancel={handlePrimaryTabAttach} handleDelete={handlePrimaryTabAttach} handleSave={handlePrimaryTabAttach}>
-                            {/* Grid container para espaçamento - para deixar display flex*/}
-                            <Grid container spacing={2} className={classes.paddingLeft}>
+        <MuiPickersUtilsProvider utils={MomentUtils}>
+            <div className={classes.root}>
+                <MainAppBar height={'40px'} />
+                <TitleBar label={'Contas a pagar'} height={'40px'} />
+                {/* Grid que agrupa o conteúdo principal e conteúdo lateral */}
+                <Grid container spacing={0} className={classes.gridRoot}>
+                    {/* Grid com o conteúdo principal */}
+                    <Grid container item xs={12} sm={12} md={9} className={classes.mainContent}>
+                        <Grid item xs={12} sm={12} className={classes.flexbox}>
+                            {/* Tabs - controlam painel exibido */}
+                            <Tabs tabsOptions={mainTabsOptions} currentValue={mainTab} handleClick={(props) => setMainTab(props)} />
+                            {/* Primeiro Painel */}
+                            <TabPanel index={mainTabsOptions[0].index} currentValue={mainTab} >
+                                <IconsPalette options={optionsList} />
+                                {/* div cria um box limitante e com scroll para tabela  */}
+                                <div className={classes.panelContent}>
+                                    <Table rows={data} header={createHeadersData(data)} paginationHeight={'8vh'} tableHeight={'73vh'} toolbarHeight={'9vh'} />
+                                </div>
+                            </TabPanel>
+                            {/* Segundo Painel */}
+                            <TabPanel index={mainTabsOptions[1].index} currentValue={mainTab} title={'ALTERAÇÃO DO TÍTULO 123456 - DESIS'}
+                                handleAttach={handlePrimaryTabAttach} handleCancel={handlePrimaryTabAttach} handleDelete={handlePrimaryTabAttach} handleSave={handlePrimaryTabAttach}>
+                                {/* Grid container para espaçamento - para deixar display flex*/}
+                                <Grid container spacing={2} className={classes.paddingLeft}>
 
-                                {/* Grid container conteúdo da esquerda  */}
-                                <Grid container item xs={10} sm={10} spacing={1} className={classes.formGroup}>
-                                    {/* Grid container linha do formulário */}
-                                    <Grid container spacing={1} >
-                                        {/* Grid container largura do input */}
-                                        <Grid container item xs={2} sm={2}>
-                                            <TextField
-                                                id="outlined-helperText"
-                                                label="Título"
-                                                defaultValue="123213123"
-                                                helperText=" "
-                                                variant="filled"
-                                                fullWidth
-                                            />
+                                    {/* Grid container conteúdo da esquerda  */}
+                                    <Grid container item xs={10} sm={10} spacing={1} className={classes.formGroup}>
+                                        {/* Grid container linha do formulário */}
+                                        <Grid container spacing={1} >
+                                            {/* Grid container largura do input */}
+                                            <Grid container item xs={2} sm={2}>
+                                                <TextField
+                                                    id="outlined-helperText" label="Título" defaultValue="12321312" helperText=" "
+                                                    variant="filled" fullWidth
+                                                />
+                                            </Grid>
+                                            <Grid container item xs={2} sm={2}>
+                                                <TextField
+                                                    id="outlined-helperText" label="Parcela" defaultValue="01/12" helperText=" " variant="filled" fullWidth
+                                                />
+                                            </Grid>
+                                            <Grid container item xs={3} sm={3}>
+                                                <TextField
+                                                    id="outlined-select-currency"
+                                                    select label="Conta" helperText=" " variant="filled" fullWidth
+                                                >
+                                                    {currencies.map(option => (
+                                                        <MenuItem key={option.value} value={option.value}>
+                                                            {option.label}
+                                                        </MenuItem>
+                                                    ))}
+                                                </TextField>
+                                            </Grid>
+                                            <Grid container item xs={2} sm={2}>
+                                                <TextField
+                                                    id="outlined-helperText" label="Situação" defaultValue="123213123" helperText=" " variant="filled"
+                                                    color="success" fullWidth
+                                                />
+                                            </Grid>
+                                            <Grid container item xs={2} sm={2}>
+                                                <TextField
+                                                    id="outlined-select-currency"
+                                                    select label="Tipo" helperText=" " variant="filled" fullWidth
+                                                >
+                                                    {currencies.map(option => (
+                                                        <MenuItem key={option.value} value={option.value}>
+                                                            {option.label}
+                                                        </MenuItem>
+                                                    ))}
+                                                </TextField>
+                                            </Grid>
                                         </Grid>
-                                        <Grid container item xs={1} sm={1}>
-                                            <TextField
-                                                id="outlined-helperText"
-                                                label="Parcela"
-                                                defaultValue="01/12"
-                                                helperText=" "
-                                                variant="filled"
-                                                fullWidth
-                                            />
+                                        {/* Grid container linha do formulário */}
+                                        <Grid container spacing={1} >
+                                            {/* Grid container largura do input */}
+                                            <Grid container item xs={6} sm={6}>
+                                                <TextField
+                                                    id="outlined-select-currency"
+                                                    select label="Fornecedor" helperText=" " variant="filled" fullWidth
+                                                >
+                                                    {currencies.map(option => (
+                                                        <MenuItem key={option.value} value={option.value}>
+                                                            {option.label}
+                                                        </MenuItem>
+                                                    ))}
+                                                </TextField>
+                                            </Grid>
+                                            <Grid container item xs={5} sm={5}>
+                                                <TextField
+                                                    id="outlined-select-currency"
+                                                    select label="Categoria" helperText=" " variant="filled" fullWidth
+                                                >
+                                                    {currencies.map(option => (
+                                                        <MenuItem key={option.value} value={option.value}>
+                                                            {option.label}
+                                                        </MenuItem>
+                                                    ))}
+                                                </TextField>
+                                            </Grid>
                                         </Grid>
-                                        <Grid container item xs={3} sm={3}>
-                                            <TextField
-                                                id="outlined-select-currency"
-                                                select
-                                                label="Conta"
-                                                // value={currency}
-                                                // onChange={handleChange}
-                                                helperText=" "
-                                                variant="filled"
-                                                fullWidth
-                                            >
-                                                {currencies.map(option => (
-                                                    <MenuItem key={option.value} value={option.value}>
-                                                        {option.label}
-                                                    </MenuItem>
-                                                ))}
-                                            </TextField>
-                                        </Grid>
-                                        <Grid container item xs={2} sm={2}>
-                                            <TextField
-                                                id="outlined-helperText"
-                                                label="Situação"
-                                                defaultValue="123213123"
-                                                helperText=" "
-                                                variant="filled"
-                                                color="success"
-                                                fullWidth
-                                            />
-                                        </Grid>
-                                        <Grid container item xs={3} sm={3}>
-                                            <TextField
-                                                id="outlined-select-currency"
-                                                select
-                                                label="Tipo"
-                                                // value={currency}
-                                                // onChange={handleChange}
-                                                helperText=" "
-                                                variant="filled"
-                                                fullWidth
-                                            >
-                                                {currencies.map(option => (
-                                                    <MenuItem key={option.value} value={option.value}>
-                                                        {option.label}
-                                                    </MenuItem>
-                                                ))}
-                                            </TextField>
-                                        </Grid>
-                                    </Grid>
-                                    {/* Grid container linha do formulário */}
-                                    <Grid container spacing={1} >
-                                        {/* Grid container largura do input */}
-                                        <Grid container item xs={6} sm={6}>
-                                            <TextField
-                                                id="outlined-select-currency"
-                                                select
-                                                label="Fornecedor"
-                                                // value={currency}
-                                                // onChange={handleChange}
-                                                helperText=" "
-                                                variant="filled"
-                                                fullWidth
-                                            >
-                                                {currencies.map(option => (
-                                                    <MenuItem key={option.value} value={option.value}>
-                                                        {option.label}
-                                                    </MenuItem>
-                                                ))}
-                                            </TextField>
-                                        </Grid>
-                                        <Grid container item xs={5} sm={5}>
-                                            <TextField
-                                                id="outlined-select-currency"
-                                                select
-                                                label="Categoria"
-                                                // value={currency}
-                                                // onChange={handleChange}
-                                                helperText=" "
-                                                variant="filled"
-                                                fullWidth
-                                            >
-                                                {currencies.map(option => (
-                                                    <MenuItem key={option.value} value={option.value}>
-                                                        {option.label}
-                                                    </MenuItem>
-                                                ))}
-                                            </TextField>
-                                        </Grid>
-                                    </Grid>
-                                    {/* Container largura do TabPanel tem que ser igual a largura do formulário */}
-                                    <Grid container item xs={11} sm={11}>
-                                        {/* Tab secundária */}
-                                        <Tabs tabsOptions={secondaryTabsOptions} currentValue={secondaryTab} handleClick={(props) => setSecondaryTab(props)} variant="secondLevel" />
-                                        {/* Primeira TabPanel secundária  */}
-                                        <TabPanel index={secondaryTabsOptions[0].index} currentValue={secondaryTab}>
-                                            {/* Grid container conteúdo do TabPanel  */}
+                                        {/* Container largura do TabPanel tem que ser igual a largura do formulário */}
+                                        <Grid container item xs={11} sm={11}>
+                                            {/* Tab secundária */}
+                                            <Tabs tabsOptions={secondaryTabsOptions} currentValue={secondaryTab} handleClick={(props) => setSecondaryTab(props)} variant="secondLevel" />
+                                            {/* Primeira TabPanel secundária  */}
+                                            <TabPanel index={secondaryTabsOptions[0].index} currentValue={secondaryTab}>
+                                                {/* Grid container conteúdo do TabPanel  */}
 
-                                            <div className={classes.secondaryPanelContent}>
-                                                <Grid container item xs={12} sm={12} spacing={0} className={classes.marginTop}>
-                                                    {/* Grid container linha do formulário */}
-                                                    <Grid container spacing={1} >
-                                                        {/* Grid largura do input */}
-                                                        <Grid item xs={3} sm={3}>
-                                                            <TextField
-                                                                id="date"
-                                                                label="Emissão"
-                                                                type="date"
-                                                                defaultValue="2020-01-01"
-                                                                fullWidth
-                                                                InputLabelProps={{
-                                                                    shrink: true,
-                                                                }}
-                                                                helperText=" "
-                                                                disabled
-                                                                variant="filled"
-                                                            />
+                                                <div className={classes.secondaryPanelContent}>
+                                                    <Grid container item xs={12} sm={12} spacing={0} className={classes.marginTop}>
+                                                        {/* Grid container linha do formulário */}
+                                                        <Grid container spacing={1} >
+                                                            {/* Grid largura do input */}
+                                                            <Grid item xs={3} sm={3}>
+                                                                <DatePicker
+                                                                    id="date" label="Emissão"
+                                                                    fullWidth
+                                                                    disableToolbar
+                                                                    inputVariant="filled"
+                                                                    format="DD/MM/YYYY"
+                                                                    onChange={() => { }}
+                                                                />
+                                                            </Grid>
+                                                            <Grid item xs={3} sm={3}>
+                                                                <DatePicker
+                                                                    id="date" label="Emissão Contábil"
+                                                                    disableToolbar
+                                                                    inputVariant="filled"
+                                                                    format="DD/MM/YYYY"
+                                                                    onChange={() => { }}
+                                                                />
+                                                            </Grid>
+                                                            <Grid item xs={3} sm={3}>
+                                                                <TextField
+                                                                    id="origem" label="Origem"
+                                                                    type="text" defaultValue="NF Compra" fullWidth helperText=" " disabled variant="filled"
+                                                                />
+                                                            </Grid>
+                                                            <Grid item xs={3} sm={3}>
+                                                                <DatePicker
+                                                                    id="docOrigem" label="Documento origem"
+                                                                    disableToolbar
+                                                                    inputVariant="filled"
+                                                                    format="DD/MM/YYYY"
+                                                                    onChange={() => { }}
+                                                                />
+                                                            </Grid>
                                                         </Grid>
-                                                        <Grid item xs={3} sm={3}>
-                                                            <TextField
-                                                                id="date"
-                                                                label="Emissão Contábil"
-                                                                type="date"
-                                                                defaultValue="2020-01-01"
-                                                                fullWidth
-                                                                InputLabelProps={{
-                                                                    shrink: true,
-                                                                }}
-                                                                helperText=" "
-                                                                disabled
-                                                                variant="filled"
-                                                            />
+                                                        {/* Grid container linha do formulário */}
+                                                        <Grid container spacing={1} >
+                                                            {/* Grid largura do input */}
+                                                            <Grid item xs={12} sm={12}>
+                                                                <TextField
+                                                                    id="descricao" label="Descrição" defaultValue="Customização" helperText=" " fullWidth variant="filled"
+                                                                />
+                                                            </Grid>
                                                         </Grid>
-                                                        <Grid item xs={3} sm={3}>
-                                                            <TextField
-                                                                id="date"
-                                                                label="Origem"
-                                                                type="text"
-                                                                defaultValue="NF Compra"
-                                                                fullWidth
-                                                                helperText=" "
-                                                                disabled
-                                                                variant="filled"
-                                                            />
-                                                        </Grid>
-                                                        <Grid item xs={3} sm={3}>
-                                                            <TextField
-                                                                id="date"
-                                                                label="Documento origem"
-                                                                type="text"
-                                                                defaultValue="123456"
-                                                                fullWidth
-                                                                helperText=" "
-                                                                disabled
-                                                                variant="filled"
-                                                            />
+                                                        {/* Grid container linha do formulário */}
+                                                        <Grid container spacing={1} >
+                                                            {/* Grid largura do input */}
+                                                            <Grid item xs={12} sm={12}>
+                                                                <TextField
+                                                                    id="observacao" label="Observação"
+                                                                    type="textarea" defaultValue="Pedir para colocar como DDA" helperText=" " fullWidth variant="filled"
+                                                                />
+                                                            </Grid>
                                                         </Grid>
                                                     </Grid>
-                                                    {/* Grid container linha do formulário */}
-                                                    <Grid container spacing={1} >
-                                                        {/* Grid largura do input */}
-                                                        <Grid item xs={12} sm={12}>
-                                                            <TextField
-                                                                id="date"
-                                                                label="Descrição"
-                                                                defaultValue="Customização"
-                                                                helperText=" "
-                                                                fullWidth
-                                                                variant="filled"
-                                                            />
+                                                </div>
+
+                                            </TabPanel>
+
+                                            {/* Segunda TabPanel secundária  */}
+                                            <TabPanel index={secondaryTabsOptions[1].index} currentValue={secondaryTab}>
+                                                <div className={classes.secondaryPanelContent}>
+
+                                                    <Grid container item xs={12} sm={12} spacing={0} className={classes.marginTop}>
+                                                        {/* Grid container linha do formulário */}
+                                                        <Grid container spacing={1} >
+                                                            {/* Grid largura do input */}
+                                                            <Grid item xs={2} sm={2}>
+                                                                <TextField label="PIS" defaultValue="0,00" fullWidth helperText=" " variant="filled"
+                                                                />
+                                                            </Grid>
+                                                            <Grid item xs={2} sm={2}>
+                                                                <TextField
+                                                                    id="ir" label="IR" defaultValue="0,00" fullWidth helperText=" " variant="filled"
+                                                                />
+                                                            </Grid>
+                                                            <Grid item xs={3} sm={3}>
+                                                                <DatePicker
+                                                                    id="competencia" label="Competência"
+                                                                    disableToolbar
+                                                                    inputVariant="filled"
+                                                                    format="DD/MM/YYYY"
+                                                                    onChange={() => { }}
+                                                                />
+                                                            </Grid>
+                                                            <Grid item xs={3} sm={3}>
+                                                                <TextField
+                                                                    id="arrecadacao"
+                                                                    select label="Arrecadação"
+                                                                    helperText=" " variant="filled" fullWidth
+                                                                >
+                                                                    {currencies.map(option => (
+                                                                        <MenuItem key={option.value} value={option.value}>
+                                                                            {option.label}
+                                                                        </MenuItem>
+                                                                    ))}
+                                                                </TextField>
+                                                            </Grid>
+                                                            <Grid item xs={2} sm={2}>
+                                                                <TextField
+                                                                    id="porcentagemArrecadacao" label="% de Arrecadação"
+                                                                    type="text" defaultValue="0%" fullWidth helperText=" " disabled variant="filled"
+                                                                />
+                                                            </Grid>
                                                         </Grid>
+                                                        {/* Grid container linha do formulário */}
+                                                        <Grid container spacing={1} >
+                                                            {/* Grid largura do input */}
+                                                            <Grid item xs={2} sm={2}>
+                                                                <TextField
+                                                                    id="text" label="COFINS" defaultValue="0,00" fullWidth helperText=" " variant="filled"
+                                                                />
+                                                            </Grid>
+                                                            <Grid item xs={2} sm={2}>
+                                                                <DatePicker
+                                                                    id="iss" label="ISS" 
+                                                                    disableToolbar
+                                                                    inputVariant="filled"
+                                                                    format="DD/MM/YYYY"
+                                                                    onChange={() => { }}
+                                                                />
+                                                            </Grid>
+                                                            <Grid item xs={3} sm={3}>
+                                                                <TextField
+                                                                    id="outlined-select-currency"
+                                                                    select label="Tipo de Contribuinte"
+                                                                    helperText=" " variant="filled" fullWidth
+                                                                >
+                                                                    {currencies.map(option => (
+                                                                        <MenuItem key={option.value} value={option.value}>
+                                                                            {option.label}
+                                                                        </MenuItem>
+                                                                    ))}
+                                                                </TextField>
+                                                            </Grid>
+                                                            <Grid item xs={3} sm={3}>
+                                                                <TextField
+                                                                    id="outlined-select-currency"
+                                                                    select label="Cód Recolhimento"
+                                                                    helperText=" " variant="filled" fullWidth
+                                                                >
+                                                                    {currencies.map(option => (
+                                                                        <MenuItem key={option.value} value={option.value}>
+                                                                            {option.label}
+                                                                        </MenuItem>
+                                                                    ))}
+                                                                </TextField>
+                                                            </Grid>
+                                                            <Grid item xs={2} sm={2}>
+                                                                <TextField
+                                                                    id="date" label="Juros"
+                                                                    type="text" defaultValue="0,00" fullWidth helperText=" " disabled variant="filled"
+                                                                />
+                                                            </Grid>
+                                                        </Grid>
+
+                                                        {/* Grid container linha do formulário */}
+                                                        <Grid container spacing={1} >
+                                                            {/* Grid largura do input */}
+                                                            <Grid item xs={2} sm={2}>
+                                                                <TextField
+                                                                    id="text" label="CSLL" defaultValue="0,00" fullWidth helperText=" " variant="filled"
+                                                                />
+                                                            </Grid>
+                                                            <Grid item xs={2} sm={2}>
+                                                                <TextField
+                                                                    id="inss" label="INSS" defaultValue="0,00" fullWidth helperText=" " variant="filled"
+                                                                />
+                                                            </Grid>
+                                                            <Grid item xs={3} sm={3}>
+                                                                <TextField
+                                                                    id="contribuinte" label="Contribuinte" defaultValue="0,00" helperText=" " variant="filled" fullWidth
+                                                                />
+                                                            </Grid>
+                                                            <Grid item xs={3} sm={3}>
+                                                                <TextField
+                                                                    id="valorArrecadacao" label="Valor arrecadação" defaultValue="0,00" helperText=" " variant="filled" fullWidth
+                                                                />
+                                                            </Grid>
+                                                            <Grid item xs={2} sm={2}>
+                                                                <TextField
+                                                                    id="multa" label="Multa"
+                                                                    type="text" defaultValue="0,00" fullWidth helperText=" "
+                                                                    disabled variant="filled"
+                                                                />
+                                                            </Grid>
+                                                        </Grid>
+
                                                     </Grid>
-                                                    {/* Grid container linha do formulário */}
-                                                    <Grid container spacing={1} >
-                                                        {/* Grid largura do input */}
-                                                        <Grid item xs={12} sm={12}>
-                                                            <TextField
-                                                                id="date"
-                                                                label="Observação"
-                                                                type="textarea"
-                                                                defaultValue="Pedir para colocar como DDA"
-                                                                helperText=" "
-                                                                fullWidth
-                                                                variant="filled"
-                                                            />
-                                                        </Grid>
+                                                </div>
+                                            </TabPanel>
+
+                                            {/* Terceira TabPanel secundária  */}
+                                            <TabPanel index={secondaryTabsOptions[2].index} currentValue={secondaryTab}>
+                                                <div className={classes.secondaryPanelContent}>
+
+                                                    {/* Grid conteúdo TabPanel */}
+                                                    <Grid container item xs={12} sm={12} spacing={0} className={classes.marginTop}>
+                                                        <Tabs tabsOptions={rateiosTabsOptions} currentValue={rateiosTab} handleClick={(props) => setRateiosTab(props)} variant="thirdLevel" />
+                                                        <TabPanel index={rateiosTabsOptions[0].index} currentValue={rateiosTab} handleDelete={() => { }} handleSave={() => { }}>
+                                                            <Table rows={dataBaixas} header={createHeadersData(dataBaixas)} paginationHeight={'8vh'} tableHeight={'73vh'} toolbarHeight={'9vh'} />
+                                                        </TabPanel>
                                                     </Grid>
-                                                </Grid>
-                                            </div>
+                                                </div>
 
-                                        </TabPanel>
+                                            </TabPanel>
 
-                                        {/* Segunda TabPanel secundária  */}
-                                        <TabPanel index={secondaryTabsOptions[1].index} currentValue={secondaryTab}>
-                                            <div className={classes.secondaryPanelContent}>
-
-                                                <Grid container item xs={12} sm={12} spacing={0} className={classes.marginTop}>
-                                                    {/* Grid container linha do formulário */}
-                                                    <Grid container spacing={1} >
-                                                        {/* Grid largura do input */}
-                                                        <Grid item xs={2} sm={2}>
-                                                            <TextField
-                                                                label="PIS"
-                                                                defaultValue="0,00"
-                                                                fullWidth
-                                                                helperText=" "
-                                                                variant="filled"
-                                                            />
-                                                        </Grid>
-                                                        <Grid item xs={2} sm={2}>
-                                                            <TextField
-                                                                id="date"
-                                                                label="IR"
-                                                                defaultValue="0,00"
-                                                                fullWidth
-                                                                helperText=" "
-                                                                variant="filled"
-                                                            />
-                                                        </Grid>
-                                                        <Grid item xs={3} sm={3}>
-                                                            <TextField
-                                                                id="date"
-                                                                label="Competência"
-                                                                type="date"
-                                                                defaultValue="2020-03-30"
-                                                                fullWidth
-                                                                InputLabelProps={{
-                                                                    shrink: true,
-                                                                }}
-                                                                helperText=" "
-                                                                variant="filled"
-                                                            />
-                                                        </Grid>
-                                                        <Grid item xs={3} sm={3}>
-                                                            <TextField
-                                                                id="outlined-select-currency"
-                                                                select
-                                                                label="Arrecadação"
-                                                                // value={currency}
-                                                                // onChange={handleChange}
-                                                                helperText=" "
-                                                                variant="filled"
-                                                                fullWidth
-                                                            >
-                                                                {currencies.map(option => (
-                                                                    <MenuItem key={option.value} value={option.value}>
-                                                                        {option.label}
-                                                                    </MenuItem>
-                                                                ))}
-                                                            </TextField>
-                                                        </Grid>
-                                                        <Grid item xs={2} sm={2}>
-                                                            <TextField
-                                                                id="date"
-                                                                label="% de Arrecadação"
-                                                                type="text"
-                                                                defaultValue="0%"
-                                                                fullWidth
-                                                                helperText=" "
-                                                                disabled
-                                                                variant="filled"
-                                                            />
-                                                        </Grid>
-                                                    </Grid>
-                                                    {/* Grid container linha do formulário */}
-                                                    <Grid container spacing={1} >
-                                                        {/* Grid largura do input */}
-                                                        <Grid item xs={2} sm={2}>
-                                                            <TextField
-                                                                id="text"
-                                                                label="COFINS"
-                                                                defaultValue="0,00"
-                                                                fullWidth
-                                                                helperText=" "
-                                                                variant="filled"
-                                                            />
-                                                        </Grid>
-                                                        <Grid item xs={2} sm={2}>
-                                                            <TextField
-                                                                id="date"
-                                                                label="ISS"
-                                                                defaultValue="0,00"
-                                                                fullWidth
-                                                                helperText=" "
-                                                                variant="filled"
-                                                            />
-                                                        </Grid>
-                                                        <Grid item xs={3} sm={3}>
-                                                            <TextField
-                                                                id="outlined-select-currency"
-                                                                select
-                                                                label="Tipo de Contribuinte"
-                                                                // value={currency}
-                                                                // onChange={handleChange}
-                                                                helperText=" "
-                                                                variant="filled"
-                                                                fullWidth
-                                                            >
-                                                                {currencies.map(option => (
-                                                                    <MenuItem key={option.value} value={option.value}>
-                                                                        {option.label}
-                                                                    </MenuItem>
-                                                                ))}
-                                                            </TextField>
-                                                        </Grid>
-                                                        <Grid item xs={3} sm={3}>
-                                                            <TextField
-                                                                id="outlined-select-currency"
-                                                                select
-                                                                label="Cód Recolhimento"
-                                                                // value={currency}
-                                                                // onChange={handleChange}
-                                                                helperText=" "
-                                                                variant="filled"
-                                                                fullWidth
-                                                            >
-                                                                {currencies.map(option => (
-                                                                    <MenuItem key={option.value} value={option.value}>
-                                                                        {option.label}
-                                                                    </MenuItem>
-                                                                ))}
-                                                            </TextField>
-                                                        </Grid>
-                                                        <Grid item xs={2} sm={2}>
-                                                            <TextField
-                                                                id="date"
-                                                                label="Juros"
-                                                                type="text"
-                                                                defaultValue="0,00"
-                                                                fullWidth
-                                                                helperText=" "
-                                                                disabled
-                                                                variant="filled"
-                                                            />
-                                                        </Grid>
-                                                    </Grid>
-
-                                                    {/* Grid container linha do formulário */}
-                                                    <Grid container spacing={1} >
-                                                        {/* Grid largura do input */}
-                                                        <Grid item xs={2} sm={2}>
-                                                            <TextField
-                                                                id="text"
-                                                                label="CSLL"
-                                                                defaultValue="0,00"
-                                                                fullWidth
-                                                                helperText=" "
-                                                                variant="filled"
-                                                            />
-                                                        </Grid>
-                                                        <Grid item xs={2} sm={2}>
-                                                            <TextField
-                                                                id="date"
-                                                                label="INSS"
-                                                                defaultValue="0,00"
-                                                                fullWidth
-                                                                helperText=" "
-                                                                variant="filled"
-                                                            />
-                                                        </Grid>
-                                                        <Grid item xs={3} sm={3}>
-                                                            <TextField
-                                                                id="outlined-select-currency"
-                                                                label="Contribuinte"
-                                                                defaultValue="0,00"
-                                                                helperText=" "
-                                                                variant="filled"
-                                                                fullWidth
-                                                            />
-                                                        </Grid>
-                                                        <Grid item xs={3} sm={3}>
-                                                            <TextField
-                                                                id="outlined-select-currency"
-                                                                label="Valor arrecadação"
-                                                                defaultValue="0,00"
-                                                                helperText=" "
-                                                                variant="filled"
-                                                                fullWidth
-                                                            />
-                                                        </Grid>
-                                                        <Grid item xs={2} sm={2}>
-                                                            <TextField
-                                                                id="date"
-                                                                label="Multa"
-                                                                type="text"
-                                                                defaultValue="0,00"
-                                                                fullWidth
-                                                                helperText=" "
-                                                                disabled
-                                                                variant="filled"
-                                                            />
-                                                        </Grid>
-                                                    </Grid>
-
-                                                </Grid>
-                                            </div>
-                                        </TabPanel>
-
-                                        {/* Terceira TabPanel secundária  */}
-                                        <TabPanel index={secondaryTabsOptions[2].index} currentValue={secondaryTab}>
-                                            <div className={classes.secondaryPanelContent}>
-
-                                                {/* Grid conteúdo TabPanel */}
-                                                <Grid container item xs={12} sm={12} spacing={0} className={classes.marginTop}>
-                                                    <Tabs tabsOptions={rateiosTabsOptions} currentValue={rateiosTab} handleClick={(props) => setRateiosTab(props)} variant="thirdLevel" />
-                                                    <TabPanel index={rateiosTabsOptions[0].index} currentValue={rateiosTab} handleDelete={() => { }} handleSave={() => { }}>
+                                            {/* Quarta TabPanel secundária  */}
+                                            <TabPanel index={secondaryTabsOptions[3].index} currentValue={secondaryTab}
+                                                handleDelete={handleSecondaryTabAttach} handleSave={handleSecondaryTabAttach}>
+                                                <div className={clsx({ [classes.secondaryPanelContent]: true, [classes.panelCorrectHeight]: true })}>
+                                                    <Grid item xs={12} sm={12} >
                                                         <Table rows={dataBaixas} header={createHeadersData(dataBaixas)} paginationHeight={'8vh'} tableHeight={'73vh'} toolbarHeight={'9vh'} />
-                                                    </TabPanel>
-                                                </Grid>
-                                            </div>
+                                                    </Grid>
+                                                </div>
+                                            </TabPanel>
 
-                                        </TabPanel>
+                                        </Grid>
 
-                                        {/* Quarta TabPanel secundária  */}
-                                        <TabPanel index={secondaryTabsOptions[3].index} currentValue={secondaryTab}
-                                            handleDelete={handleSecondaryTabAttach} handleSave={handleSecondaryTabAttach}>
-                                            <div className={clsx({ [classes.secondaryPanelContent]: true, [classes.panelCorrectHeight]: true })}>
-                                                <Grid item xs={12} sm={12} >
-                                                    <Table rows={dataBaixas} header={createHeadersData(dataBaixas)} paginationHeight={'8vh'} tableHeight={'73vh'} toolbarHeight={'9vh'} />
-                                                </Grid>
-                                            </div>
-                                        </TabPanel>
 
                                     </Grid>
 
-
-                                </Grid>
-
-                                {/* Grid container conteúdo da direta [coluna de input]  */}
-                                <Grid container item xs={2} sm={2} spacing={1} className={classes.formGroup}>
-                                    {/* Grid container linha do formulário */}
-                                    <Grid container spacing={1}>
-                                        {/* Grid container largura do input */}
-                                        <Grid item container xs={12} sm={12}>
-                                            <TextField
-                                                id="date"
-                                                label="Vencimento"
-                                                type="date"
-                                                defaultValue="2020-01-01"
-                                                className={classes.textField}
-                                                fullWidth
-                                                InputLabelProps={{
-                                                    shrink: true,
-                                                }}
-                                                variant="filled"
+                                    {/* Grid container conteúdo da direta [coluna de input]  */}
+                                    <Grid container item xs={2} sm={2} spacing={1} className={classes.formGroup}>
+                                        {/* Grid container linha do formulário */}
+                                        <Grid container spacing={1}>
+                                            {/* Grid container largura do input */}
+                                            <Grid item container xs={12} sm={12}>
+                                                <DatePicker
+                                                    label="Vencimento"
+                                                    disableToolbar
+                                                    inputVariant="filled"
+                                                    format="DD/MM/YYYY"
+                                                    onChange={() => { }}
                                                 />
-                                        </Grid>
-                                        <Grid container item xs={12} sm={12}>
-                                            <TextField
-                                                id="date"
-                                                label="Vencimento Útil"
-                                                type="date"
-                                                defaultValue="2020-01-02"
-                                                className={classes.textField}
-                                                fullWidth
-                                                InputLabelProps={{
-                                                    shrink: true,
-                                                }}
-                                                variant="filled"
+                                            </Grid>
+                                            <Grid container item xs={12} sm={12}>
+                                                <DatePicker
+                                                    id="date" label="Vencimento Útil"
+                                                    disableToolbar
+                                                    inputVariant="filled"
+                                                    format="DD/MM/YYYY"
+                                                    onChange={() => { }}
                                                 />
-                                        </Grid>
-                                        <Grid container item xs={12} sm={12}>
-                                            <TextField
-                                                id="outlined-helperText"
-                                                label="Valor Original"
-                                                defaultValue="1500,00"
-                                                helperText=""
-                                                variant="filled"
-                                                fullWidth
-                                            />
-                                        </Grid>
-                                        <Grid container item xs={12} sm={12}>
-                                            <TextField
-                                                id="outlined-helperText"
-                                                label="Valor Impostos"
-                                                defaultValue="270,00"
-                                                helperText=""
-                                                variant="filled"
-                                                fullWidth
-                                            />
-                                        </Grid>
-                                        <Grid container item xs={12} sm={12}>
-                                            <TextField
-                                                id="outlined-helperText"
-                                                label="Valor Desconto"
-                                                defaultValue="50,00"
-                                                helperText=""
-                                                variant="filled"
-                                                fullWidth
-                                            />
-                                        </Grid>
-                                        <Grid container item xs={12} sm={12}>
-                                            <TextField
-                                                id="outlined-helperText"
-                                                label="Valor Abatimento"
-                                                defaultValue="0,00"
-                                                helperText=""
-                                                variant="filled"
-                                                fullWidth
-                                            />
-                                        </Grid>
-                                        <Grid container item xs={12} sm={12}>
-                                            <TextField
-                                                id="outlined-helperText"
-                                                label="Valor Pago"
-                                                defaultValue="0,00"
-                                                helperText=""
-                                                variant="filled"
-                                                fullWidth
-                                            />
-                                        </Grid>
-                                        <Grid container item xs={12} sm={12}>
-                                            <TextField
-                                                id="outlined-helperText"
-                                                label="Valor Saldo"
-                                                defaultValue="1720,00"
-                                                helperText=""
-                                                variant="filled"
-                                                fullWidth
-                                            />
+                                            </Grid>
+                                            <Grid container item xs={12} sm={12}>
+                                                <TextField
+                                                    id="outlined-helperText" label="Valor Original" defaultValue="1500,00" helperText=""
+                                                    variant="filled" fullWidth
+                                                />
+                                            </Grid>
+                                            <Grid container item xs={12} sm={12}>
+                                                <TextField
+                                                    id="outlined-helperText" label="Valor Impostos" defaultValue="270,00" helperText=""
+                                                    variant="filled" fullWidth
+                                                />
+                                            </Grid>
+                                            <Grid container item xs={12} sm={12}>
+                                                <TextField
+                                                    id="outlined-helperText" label="Valor Desconto" defaultValue="50,00" helperText=""
+                                                    variant="filled" fullWidth
+                                                />
+                                            </Grid>
+                                            <Grid container item xs={12} sm={12}>
+                                                <TextField
+                                                    id="outlined-helperText" label="Valor Abatimento" defaultValue="0,00" helperText=""
+                                                    variant="filled" fullWidth
+                                                />
+                                            </Grid>
+                                            <Grid container item xs={12} sm={12}>
+                                                <TextField
+                                                    id="outlined-helperText" label="Valor Pago" defaultValue="0,00" helperText=""
+                                                    variant="filled" fullWidth
+                                                />
+                                            </Grid>
+                                            <Grid container item xs={12} sm={12}>
+                                                <TextField
+                                                    id="outlined-helperText" label="Valor Saldo" defaultValue="1720,00" helperText=""
+                                                    variant="filled" fullWidth
+                                                />
+                                            </Grid>
                                         </Grid>
                                     </Grid>
+
                                 </Grid>
+                            </TabPanel>
 
-                            </Grid>
-                        </TabPanel>
-
+                        </Grid>
+                    </Grid>
+                    {/* Grid com o conteúdo aside (conteúdo lateral)*/}
+                    <Grid item xs={3} sm={3} className={classes.sideContent}>
+                        <SimpleSidebar simpleCard={simpleCard} balanceCard={balanceCard} />
                     </Grid>
                 </Grid>
-                {/* Grid com o conteúdo aside (conteúdo lateral)*/}
-                <Grid item xs={3} sm={3} className={classes.sideContent}>
-                    <SimpleSidebar simpleCard={simpleCard} balanceCard={balanceCard} />
-                </Grid>
-            </Grid>
-        </div >
-
+            </div >
+        </MuiPickersUtilsProvider>
     );
 };
 

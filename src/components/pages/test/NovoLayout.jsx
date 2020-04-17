@@ -1,13 +1,14 @@
 import React, { Fragment } from "react";
 import clsx from 'clsx';
 import DatePicker from "../../atoms/DatePicker";
-import FilteredTable from "../../molecules/FilteredTable";
+import FilteredTable, { createHeadersData } from "../../molecules/FilteredTable";
 import IconsPalette from "../../molecules/IconsPalette";
+import moment from "moment";
 import MomentUtils from '@date-io/moment';
 import Tabs from "../../atoms/Tabs";
 import TabPanel from "../../atoms/TabPanel";
 import SimpleSidebar from "../../molecules/SimpleSidebar";
-import Table, { createHeadersData } from "../../molecules/Table";
+import Table from "../../molecules/Table";
 import BodyScrollHidden from "../../atoms/BodyScrollHidden";
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import Grid from '@material-ui/core/Grid';
@@ -122,21 +123,21 @@ const createData = (id, empresa, titulo, parcela, nome, vencimento, vencimentoUt
 }
 
 const data = [
-    createData(1, '001/00', '111111', '2 de 10', 'Fornecedor A', '10/08/2020', '20/08/2020', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
-    createData(2, '001/00', '111111', '2 de 10', 'Fornecedor A', '11/08/2020', '20/08/2020', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
-    createData(3, '001/00', '222222', '2 de 10', 'Fornecedor A', '12/08/2020', '20/08/2020', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
-    createData(4, '001/00', '222222', '2 de 10', 'Fornecedor A', '13/08/2020', '20/08/2020', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
-    createData(5, '001/00', '222222', '2 de 10', 'Fornecedor A', '14/08/2020', '20/08/2020', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
-    createData(6, '001/00', '333333', '2 de 10', 'Fornecedor A', '15/08/2020', '20/08/2020', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
-    createData(7, '001/00', '333333', '2 de 10', 'Fornecedor A', '16/08/2020', '20/08/2020', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
-    createData(8, '001/00', '444444', '2 de 10', 'Fornecedor A', '17/08/2020', '20/08/2020', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
-    createData(9, '001/00', '444444', '2 de 10', 'Fornecedor A', '18/08/2020', '20/08/2020', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
-    createData(10, '001/00', '555555', '2 de 10', 'Fornecedor A', '19/08/2020', '20/08/2020', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
-    createData(11, '001/00', '555555', '2 de 10', 'Fornecedor A', '20/08/2020', '20/08/2020', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
-    createData(12, '001/00', '666666', '2 de 10', 'Fornecedor A', '21/08/2020', '20/08/2020', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
-    createData(13, '001/00', '666666', '2 de 10', 'Fornecedor A', '22/08/2020', '20/08/2020', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
-    createData(14, '001/00', '777777', '2 de 10', 'Fornecedor A', '23/08/2020', '20/08/2020', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
-    createData(15, '001/00', '777777', '2 de 10', 'Fornecedor A', '24/08/2020', '20/08/2020', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
+    createData(1,  '001/00', '111111', '2 de 10', 'Fornecedor A', '2020/08/10', '2020/09/10', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
+    createData(2,  '001/00', '111111', '2 de 10', 'Fornecedor A', '2020/08/11', '2020/09/11', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
+    createData(3,  '001/00', '222222', '2 de 10', 'Fornecedor A', '2020/08/12', '2020/09/12', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
+    createData(4,  '001/00', '222222', '2 de 10', 'Fornecedor A', '2020/08/13', '2020/09/13', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
+    createData(5,  '001/00', '222222', '2 de 10', 'Fornecedor A', '2020/08/14', '2020/09/14', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
+    createData(6,  '001/00', '333333', '2 de 10', 'Fornecedor A', '2020/08/15', '2020/09/15', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
+    createData(7,  '001/00', '333333', '2 de 10', 'Fornecedor A', '2020/08/16', '2020/09/16', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
+    createData(8,  '001/00', '444444', '2 de 10', 'Fornecedor A', '2020/08/17', '2020/09/17', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
+    createData(9,  '001/00', '444444', '2 de 10', 'Fornecedor A', '2020/08/18', '2020/09/18', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
+    createData(10, '001/00', '555555', '2 de 10', 'Fornecedor A', '2020/08/19', '2020/09/19', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
+    createData(11, '001/00', '555555', '2 de 10', 'Fornecedor A', '2020/08/20', '2020/09/20', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
+    createData(12, '001/00', '666666', '2 de 10', 'Fornecedor A', '2020/08/21', '2020/09/21', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
+    createData(13, '001/00', '666666', '2 de 10', 'Fornecedor A', '2020/08/22', '2020/09/22', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
+    createData(14, '001/00', '777777', '2 de 10', 'Fornecedor A', '2020/08/23', '2020/09/23', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
+    createData(15, '001/00', '777777', '2 de 10', 'Fornecedor A', '2020/08/24', '2020/09/24', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
 ];
 
 const createDataBaixas = (id, seq, dataDaBaixa, valor, porcentagem, cheque, conta) => {

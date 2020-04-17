@@ -5,6 +5,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import IconButton from '@material-ui/core/IconButton';
+import moment from "moment";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import Paper from '@material-ui/core/Paper';
 import PropTypes from "prop-types";
@@ -37,9 +38,11 @@ export const createHeadersData = (data) => { // adiciona propriedades para o hea
     const keys = Object.keys(data[0]);
     return keys.map((column, index) => {
         const regex = /^-?[0-9]?[0-9,\.]+$/; // regex identifica se é número 
+
         return {
             columnName: column,
             numeric: regex.test(data[0][column]) ? true : false,
+            isDate: moment(data[0][column], "YYYY-MM-DD").isValid(),
             disablePadding: index === 0 ? true : false,
             label: column,
         }
@@ -74,6 +77,10 @@ function stableSort(array, comparator) {
 
 function getOrderedList(rows, orderAscDesc, orderByColumn) {
     return stableSort(rows, getComparator(orderAscDesc, orderByColumn));
+}
+
+function getFilteredList(rows, filters){
+
 }
 
 const EnhancedTableHead = (props) => {
@@ -150,7 +157,7 @@ const FilteringTableHead = ({ handleChangeFilterMethod, handleChangeInputFilterM
                                 currentMethod={columnFilters[cell.columnName].currentMethod}
                                 onInputChange={(newValue) => handleChangeInputFilterMethod(cell.columnName, newValue)}
                                 onMethodChange={(newMethod) => handleChangeFilterMethod(cell.columnName, newMethod)}
-
+                                type={columnFilters[cell.columnName].isDate ? "date": (columnFilters[cell.columnName].numeric ? 'number' : 'text') }
                             />
                         </TableCell>
                     ))
@@ -302,6 +309,7 @@ export default function FilteredTable(props) {
     //console.log('table props', { paginationHeight, tableHeight, toolbarHeight })
     const classes = useStyles({ paginationHeight, tableHeight })();
     const classesTableBody = useStyledTableBody();
+    console.log(header);
     const [columnFilters, setColumnFilters] = React.useState(
         header.reduce(function (acc, column, i) {
             // transformar array em objeto, cujo cada propriedade do objeto é o nome da coluna

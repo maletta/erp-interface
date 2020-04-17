@@ -50,6 +50,23 @@ const switchIcon = (
     }
 )
 
+const switchIcon2 = (
+    {
+        [filteringMethod.contains]: './icons/contains.svg',
+        [filteringMethod.doesNotContain]: './icons/doesNotContain.svg',
+        [filteringMethod.doesNotEqual]: './icons/doesNotEqual.svg',
+        [filteringMethod.endsWith]: './icons/endsWith.svg',
+        [filteringMethod.equals]: './icons/equals.svg',
+        [filteringMethod.lessThan]: './icons/lessThan.svg',
+        [filteringMethod.lessThanOrEqualTo]: './icons/lessThanOrEqualTo.svg',
+        [filteringMethod.greaterThan]: './icons/greaterThan.svg',
+        [filteringMethod.greaterThanOrEqualTo]: './icons/greaterThanOrEqualTo.svg',
+        [filteringMethod.monthEquals]: './icons/monthEquals.svg',
+        [filteringMethod.startsWith]: './icons/startsWith.svg',
+
+    }
+)
+
 const switchLabel = (
     {
         [filteringMethod.contains]: "Contém",
@@ -112,26 +129,31 @@ const filteringMethodByType = {
     filteringMethod.endsWith, filteringMethod.equals, filteringMethod.doesNotEqual],
 }
 
-const TextFieldFiltering = ({ type, currentMethod, onChange }) => {
+const TextFieldFiltering = ({ type, currentMethod, onInputChange, onMethodChange }) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
 
-    const handleClose = (newMethod) => {
-        // console.log(newMethod);
-        onChange(newMethod);
+    const handleClose = ({ method }) => {
+        console.log(`perdeu o foco `, method);
+        onMethodChange(method);
         setAnchorEl(null);
     };
-    console.log('rapaz ',currentMethod);
+
+    const handleInputChange = (e) => {
+        const newValue = e.currentTarget.value;
+        onInputChange(newValue);
+    }
+    console.log('text filtering mount ', currentMethod);
     const classes = useStyles();
     return (
         <div className={classes.root}>
             <IconButton edge="start" className={classes.logoButton} color="inherit" aria-label="menu" onClick={handleClick}>
-                <img src={switchIcon[currentMethod]} alt="icone de filtragem" className={classes.logo} />
+                <img src={switchIcon2[currentMethod]} alt="i" className={classes.logo} />
             </IconButton>
-            <InputBase placeholder={'Filtro...'} className={classes.input}  />
+            <InputBase placeholder={'Filtro...'} className={classes.input} onChange={handleInputChange} />
             <Menu
                 anchorEl={anchorEl}
                 keepMounted
@@ -140,8 +162,8 @@ const TextFieldFiltering = ({ type, currentMethod, onChange }) => {
             >
                 {
                     filteringMethodByType[type].map((method, index) => (
-                        <MenuItem key={`${index}`} onClick={() => handleClose(method)} className={classes.menuItem}>
-                            <img src={switchIcon[method]} alt="icone de filtragem" className={classes.logo} />
+                        <MenuItem key={index} onClick={() => handleClose({ method })} className={classes.menuItem} >
+                            <img src={switchIcon2[method]} alt="icone de filtragem" className={classes.logo} />
                             <span>{switchLabel[method]}</span>
                         </MenuItem>
 
@@ -155,13 +177,15 @@ const TextFieldFiltering = ({ type, currentMethod, onChange }) => {
 TextFieldFiltering.defaultProps = {
     type: filteringType.text,
     currentMethod: filteringMethod.contains,
-    onChange: () => {},
+    onMethodChange: () => { },
+    onInputChange: () => { },
 }
 
 TextFieldFiltering.propTypes = {
     type: PropTypes.oneOf([filteringType.date, filteringType.number, filteringType.text]),
     currentMethod: PropTypes.oneOf(Object.keys(filteringMethod)),
-    onChange: PropTypes.func.isRequired,
+    onMethodChange: PropTypes.func.isRequired,
+    onInputChange: PropTypes.func.isRequired,
 }
 
 export default TextFieldFiltering;

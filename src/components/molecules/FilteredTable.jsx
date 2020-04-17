@@ -96,7 +96,7 @@ const EnhancedTableHead = (props) => {
                     headerCells.map((cell, index) => {
                         return (
                             <TableCell
-                                key={`${index}${cell.columnName}`}
+                                key={index}
                                 align="center"
                                 // padding={cell.disablePadding ? 'none' : 'default'}
                                 padding={'default'}
@@ -136,7 +136,7 @@ EnhancedTableHead.propTypes = {
 };
 
 
-const FilteringTableHead = ({ handleChangeFilterMethod, headerCells, columnFilters }) => {
+const FilteringTableHead = ({ handleChangeFilterMethod, handleChangeInputFilterMethod, headerCells, columnFilters }) => {
     //currentMethod={columnFilters[cell.columnFilters]}
 
     return (
@@ -145,10 +145,13 @@ const FilteringTableHead = ({ handleChangeFilterMethod, headerCells, columnFilte
                 <TableCell padding={'none'} />
                 {
                     headerCells.map((cell, index) => (
-                        <TableCell key={`${index}`}>
+                        <TableCell key={index}>
                             <TextFieldFiltering
                                 currentMethod={columnFilters[cell.columnName].currentMethod}
-                                onChange={(newMethod) => handleChangeFilterMethod(cell.columnName, newMethod) } />
+                                onInputChange={(newValue) => handleChangeInputFilterMethod(cell.columnName, newValue)}
+                                onMethodChange={(newMethod) => handleChangeFilterMethod(cell.columnName, newMethod)}
+
+                            />
                         </TableCell>
                     ))
                 }
@@ -300,18 +303,16 @@ export default function FilteredTable(props) {
     const classes = useStyles({ paginationHeight, tableHeight })();
     const classesTableBody = useStyledTableBody();
     const [columnFilters, setColumnFilters] = React.useState(
-        header.reduce(function (acc, cur, i) {
+        header.reduce(function (acc, column, i) {
             // transformar array em objeto, cujo cada propriedade do objeto é o nome da coluna
             // adiciona a propriedade currentMethod para controlar o filtro atual de cada coluna
-            acc[cur.columnName] = { ...cur, currentMethod: filteringMethod.contains };
+            acc[column.columnName] = { ...column, currentMethod: filteringMethod.contains, input: '' };
             return acc;
         }, {}));
 
     console.log(columnFilters)
 
-    useEffect( ()=> {
 
-    }, [columnFilters])
 
     const [dense, setDense] = React.useState(true);
     const [orderAscDesc, setOrderAscDesc] = React.useState('asc');
@@ -323,6 +324,11 @@ export default function FilteredTable(props) {
     const handleChangeFilterMethod = (column, newMethod) => {
         console.log(column, newMethod)
         setColumnFilters({ ...columnFilters, [column]: { ...columnFilters[column], currentMethod: newMethod } });
+    }
+
+    const handleChangeInputFilterMethod = (column, newValue) => {
+        console.log(column, newValue)
+        setColumnFilters({ ...columnFilters, [column]: { ...columnFilters[column], input: newValue } });
     }
 
     const handleRequestSort = (event, property) => {
@@ -406,6 +412,7 @@ export default function FilteredTable(props) {
                                 <FilteringTableHead
                                     classes={''}
                                     handleChangeFilterMethod={handleChangeFilterMethod}
+                                    handleChangeInputFilterMethod={handleChangeInputFilterMethod}
                                     headerCells={header}
                                     columnFilters={columnFilters}
                                 />
@@ -414,7 +421,8 @@ export default function FilteredTable(props) {
                         <TableBody
                             classes={{ root: classesTableBody.root }}
                         >
-                            {getOrderedList(rows, orderAscDesc, orderByColumn)
+                            {//getOrderedList(rows, orderAscDesc, orderByColumn)
+                            rows
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((row, index, array) => {
                                     const isItemSelected = isSelected(row.id);
@@ -484,7 +492,7 @@ const createRow = (row, isItemSelected, labelId, onClickHandle) => {
     const rowKeys = Object.keys(row);
     return (
         <TableRow
-            key={`${row.id}`}
+            key={row.id}
             hover
             onClick={event => onClickHandle(event, row.id)}
 

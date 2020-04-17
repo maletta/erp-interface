@@ -51,7 +51,6 @@ const useStyles = props => (makeStyles(theme => ({
 
 export default function MainAppBar({ height }) {
   const classes = useStyles({ height })();
-
   return (
     <AppBar position="static" className={classes.appBar}>
 

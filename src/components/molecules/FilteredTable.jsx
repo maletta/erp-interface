@@ -157,7 +157,7 @@ const FilteringTableHead = ({ handleChangeFilterMethod, handleChangeInputFilterM
                                 currentMethod={columnFilters[cell.columnName].currentMethod}
                                 onInputChange={(newValue) => handleChangeInputFilterMethod(cell.columnName, newValue)}
                                 onMethodChange={(newMethod) => handleChangeFilterMethod(cell.columnName, newMethod)}
-                                type={columnFilters[cell.columnName].isDate ? "date": (columnFilters[cell.columnName].numeric ? 'number' : 'text') }
+                                type={columnFilters[cell.columnName].numeric ? "number": (columnFilters[cell.columnName].isDate ? 'date' : 'text') }
                             />
                         </TableCell>
                     ))

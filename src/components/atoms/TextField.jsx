@@ -57,7 +57,6 @@ const inputVariantType = {
 
 
 export function mountInputStyles(theme, paletteColor, variant = "filled") {
-    console.log('variant ', variant);
     const color = paletteColor ? paletteColor : 'primary';
     return inputVariantType[variant](theme, color);
 

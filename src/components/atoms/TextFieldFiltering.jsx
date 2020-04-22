@@ -3,6 +3,7 @@ import IconButton from '@material-ui/core/IconButton';
 import InputBase from '@material-ui/core/InputBase';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import moment from "moment";
 import PropTypes from 'prop-types';
 import {
     ContainsIcon, DoesNotContainIcon, DoesNotEqualIcon, EndsWithIcon, EqualsIcon,
@@ -13,13 +14,13 @@ import { makeStyles } from '@material-ui/core/styles';
 
 
 
-const filteringType = {
+const contentType = {
     date: "date",
     number: "number",
     text: "text",
 }
 
-const filteringMethod = {
+const filteringMethodType = {
     contains: "contains",
     doesNotContain: "doesNotContain",
     doesNotEqual: "doesNotEqual",
@@ -33,56 +34,69 @@ const filteringMethod = {
     startsWith: "startsWith",
 }
 
-const switchIcon = (
-    {
-        [filteringMethod.contains]: ContainsIcon,
-        [filteringMethod.doesNotContain]: DoesNotContainIcon,
-        [filteringMethod.doesNotEqual]: DoesNotEqualIcon,
-        [filteringMethod.endsWith]: EndsWithIcon,
-        [filteringMethod.equals]: EqualsIcon,
-        [filteringMethod.lessThan]: LessThanIcon,
-        [filteringMethod.lessThanOrEqualTo]: LessThanOrEqualToIcon,
-        [filteringMethod.greaterThan]: GreaterThanIcon,
-        [filteringMethod.greaterThanOrEqualTo]: GreaterThanOrEqualToIcon,
-        [filteringMethod.monthEquals]: MonthEqualsIcon,
-        [filteringMethod.startsWith]: StartsWithIcon,
+const switchIcon =
+{
+    [filteringMethodType.contains]: ContainsIcon,
+    [filteringMethodType.doesNotContain]: DoesNotContainIcon,
+    [filteringMethodType.doesNotEqual]: DoesNotEqualIcon,
+    [filteringMethodType.endsWith]: EndsWithIcon,
+    [filteringMethodType.equals]: EqualsIcon,
+    [filteringMethodType.lessThan]: LessThanIcon,
+    [filteringMethodType.lessThanOrEqualTo]: LessThanOrEqualToIcon,
+    [filteringMethodType.greaterThan]: GreaterThanIcon,
+    [filteringMethodType.greaterThanOrEqualTo]: GreaterThanOrEqualToIcon,
+    [filteringMethodType.monthEquals]: MonthEqualsIcon,
+    [filteringMethodType.startsWith]: StartsWithIcon,
 
-    }
-)
+}
 
 const switchIcon2 = (
     {
-        [filteringMethod.contains]: './icons/contains.svg',
-        [filteringMethod.doesNotContain]: './icons/doesNotContain.svg',
-        [filteringMethod.doesNotEqual]: './icons/doesNotEqual.svg',
-        [filteringMethod.endsWith]: './icons/endsWith.svg',
-        [filteringMethod.equals]: './icons/equals.svg',
-        [filteringMethod.lessThan]: './icons/lessThan.svg',
-        [filteringMethod.lessThanOrEqualTo]: './icons/lessThanOrEqualTo.svg',
-        [filteringMethod.greaterThan]: './icons/greaterThan.svg',
-        [filteringMethod.greaterThanOrEqualTo]: './icons/greaterThanOrEqualTo.svg',
-        [filteringMethod.monthEquals]: './icons/monthEquals.svg',
-        [filteringMethod.startsWith]: './icons/startsWith.svg',
+        [filteringMethodType.contains]: './icons/contains.svg',
+        [filteringMethodType.doesNotContain]: './icons/doesNotContain.svg',
+        [filteringMethodType.doesNotEqual]: './icons/doesNotEqual.svg',
+        [filteringMethodType.endsWith]: './icons/endsWith.svg',
+        [filteringMethodType.equals]: './icons/equals.svg',
+        [filteringMethodType.lessThan]: './icons/lessThan.svg',
+        [filteringMethodType.lessThanOrEqualTo]: './icons/lessThanOrEqualTo.svg',
+        [filteringMethodType.greaterThan]: './icons/greaterThan.svg',
+        [filteringMethodType.greaterThanOrEqualTo]: './icons/greaterThanOrEqualTo.svg',
+        [filteringMethodType.monthEquals]: './icons/monthEquals.svg',
+        [filteringMethodType.startsWith]: './icons/startsWith.svg',
 
     }
 )
 
 const switchLabel = (
     {
-        [filteringMethod.contains]: "Contém",
-        [filteringMethod.doesNotContain]: "Não contém",
-        [filteringMethod.doesNotEqual]: "Não é igual a",
-        [filteringMethod.endsWith]: "Termina com",
-        [filteringMethod.equals]: "É igual a",
-        [filteringMethod.lessThan]: "Menor que",
-        [filteringMethod.lessThanOrEqualTo]: "Menor que ou igual a",
-        [filteringMethod.greaterThan]: "Maior que",
-        [filteringMethod.greaterThanOrEqualTo]: "Maior que ou igual a",
-        [filteringMethod.monthEquals]: "Mês igual a",
-        [filteringMethod.startsWith]: "Começa com",
+        [filteringMethodType.contains]: "Contém",
+        [filteringMethodType.doesNotContain]: "Não contém",
+        [filteringMethodType.doesNotEqual]: "Não é igual a",
+        [filteringMethodType.endsWith]: "Termina com",
+        [filteringMethodType.equals]: "É igual a",
+        [filteringMethodType.lessThan]: "Menor que",
+        [filteringMethodType.lessThanOrEqualTo]: "Menor que ou igual a",
+        [filteringMethodType.greaterThan]: "Maior que",
+        [filteringMethodType.greaterThanOrEqualTo]: "Maior que ou igual a",
+        [filteringMethodType.monthEquals]: "Mês igual a",
+        [filteringMethodType.startsWith]: "Começa com",
 
     }
 );
+
+const filteringMethod = {
+    [filteringMethodType.contains]: (content, filter) => `${content}`.includes(filter),
+    [filteringMethodType.doesNotContain]: (content, filter) => !`${content}`.includes(filter),
+    [filteringMethodType.doesNotEqual]: (content, filter) => !(`${content}` === `${filter}`),
+    [filteringMethodType.endsWith]: (content, filter) => `${content}`.endsWith(`${filter}`),
+    [filteringMethodType.equals]: (content, filter) => `${content}` === `${filter}`,
+    [filteringMethodType.lessThan]: (content, filter) => parseInt(content,10) < parseInt(filter, 10),
+    [filteringMethodType.lessThanOrEqualTo]: (content, filter) => parseInt(content,10)  <= parseInt(filter, 10),
+    [filteringMethodType.greaterThan]: (content, filter) => parseInt(content,10) > parseInt(filter, 10),
+    [filteringMethodType.greaterThanOrEqualTo]: (content, filter) => parseInt(content,10) >= parseInt(filter, 10),
+    [filteringMethodType.monthEquals]: (content, filter) => moment.format(moment(`${content}`).month(), 'M') === parseInt(filter, 10),
+    [filteringMethodType.startsWith]: (content, filter) => `${content}`.startsWith(`${filter}`),
+}
 
 const useStyles = makeStyles(theme => ({
     input: {
@@ -114,20 +128,22 @@ const useStyles = makeStyles(theme => ({
 
 }));
 
-const mountMenuItem = ({ classes, filteringMethod, handleClose }) => (
-    <MenuItem onClick={handleClose} className={classes.menuItem}> <img src={switchIcon[filteringMethod]} alt="filtered icon" className={classes.logo} /> <span>{switchLabel[filteringMethod]}</span></MenuItem>
+const mountMenuItem = ({ classes, filteringMethodType, handleClose }) => (
+    <MenuItem onClick={handleClose} className={classes.menuItem}> <img src={switchIcon[filteringMethodType]} alt="filtered icon" className={classes.logo} /> <span>{switchLabel[filteringMethodType]}</span></MenuItem>
 );
 
 const filteringMethodByType = {
-    [filteringType.number]: [filteringMethod.equals, filteringMethod.doesNotEqual, filteringMethod.greaterThan,
-    filteringMethod.greaterThanOrEqualTo, filteringMethod.lessThan, filteringMethod.lessThanOrEqualTo],
+    [contentType.number]: [filteringMethodType.equals, filteringMethodType.doesNotEqual, filteringMethodType.greaterThan,
+    filteringMethodType.greaterThanOrEqualTo, filteringMethodType.lessThan, filteringMethodType.lessThanOrEqualTo],
 
-    [filteringType.date]: [filteringMethod.monthEquals, filteringMethod.contains,
-    filteringMethod.startsWith, filteringMethod.endsWith],
+    [contentType.date]: [filteringMethodType.monthEquals, filteringMethodType.contains,
+    filteringMethodType.startsWith, filteringMethodType.endsWith],
 
-    [filteringType.text]: [filteringMethod.contains, filteringMethod.doesNotContain, filteringMethod.startsWith,
-    filteringMethod.endsWith, filteringMethod.equals, filteringMethod.doesNotEqual],
+    [contentType.text]: [filteringMethodType.contains, filteringMethodType.doesNotContain, filteringMethodType.startsWith,
+    filteringMethodType.endsWith, filteringMethodType.equals, filteringMethodType.doesNotEqual],
 }
+
+
 
 const TextFieldFiltering = ({ type, currentMethod, onInputChange, onMethodChange }) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -137,8 +153,9 @@ const TextFieldFiltering = ({ type, currentMethod, onInputChange, onMethodChange
     };
 
     const handleClose = ({ method }) => {
-        console.log(`perdeu o foco `, method);
-        onMethodChange(method);
+        //console.log(`perdeu o foco `, method);
+        const newMethod = method ? method : currentMethod;
+        onMethodChange(newMethod);
         setAnchorEl(null);
     };
 
@@ -146,7 +163,7 @@ const TextFieldFiltering = ({ type, currentMethod, onInputChange, onMethodChange
         const newValue = e.currentTarget.value;
         onInputChange(newValue);
     }
-    console.log('text filtering mount ', currentMethod);
+   // console.log('text filtering mount ', currentMethod);
     const classes = useStyles();
     return (
         <div className={classes.root}>
@@ -175,20 +192,21 @@ const TextFieldFiltering = ({ type, currentMethod, onInputChange, onMethodChange
 }
 
 TextFieldFiltering.defaultProps = {
-    type: filteringType.text,
-    currentMethod: filteringMethod.contains,
+    type: contentType.text,
+    currentMethod: filteringMethodType.contains,
     onMethodChange: () => { },
     onInputChange: () => { },
 }
 
 TextFieldFiltering.propTypes = {
-    type: PropTypes.oneOf([filteringType.date, filteringType.number, filteringType.text]),
-    currentMethod: PropTypes.oneOf(Object.keys(filteringMethod)),
+    type: PropTypes.oneOf([contentType.date, contentType.number, contentType.text]),
+    currentMethod: PropTypes.oneOf(Object.keys(filteringMethodType)),
     onMethodChange: PropTypes.func.isRequired,
     onInputChange: PropTypes.func.isRequired,
 }
 
 export default TextFieldFiltering;
 export {
-    filteringMethod
+    filteringMethod,
+    filteringMethodType,
 };

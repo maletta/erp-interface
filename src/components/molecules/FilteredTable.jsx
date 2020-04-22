@@ -18,7 +18,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
-import TextFieldFiltering, { filteringMethod } from '../atoms/TextFieldFiltering';
+import TextFieldFiltering, { filteringMethod, filteringMethodType } from '../atoms/TextFieldFiltering';
 import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
@@ -33,11 +33,11 @@ TotalHeight = 90vh
 }
 */
 
-
+// header precisa ter coluna id
 export const createHeadersData = (data) => { // adiciona propriedades para o header
     const keys = Object.keys(data[0]);
     return keys.map((column, index) => {
-        const regex = /^-?[0-9]?[0-9,\.]+$/; // regex identifica se é número 
+        const regex = /^-?[0-9]?[0-9,\.]+$/; // regex identifica se é número
 
         return {
             columnName: column,
@@ -79,8 +79,25 @@ function getOrderedList(rows, orderAscDesc, orderByColumn) {
     return stableSort(rows, getComparator(orderAscDesc, orderByColumn));
 }
 
-function getFilteredList(rows, filters){
+function getFilteredList(rows, columnFilters) {
+    const filteredColumns = Object.keys(columnFilters).filter(column => columnFilters[column].input || columnFilters[column].input.length > 0)
+    console.log('meus filtros ', filteredColumns)
+    console.log('rows ', rows);
+    const filteredRows = rows.filter(
+        row => filteredColumns.reduce(
+            (acc, column) => {
+                const content = row[column];
+                const filter = columnFilters[column].input;
+                const filterMethod = columnFilters[column].currentMethod;
+                const result = filteringMethod[filterMethod](content, filter);
+                console.log('filtro aplicado ', filterMethod);
+                console.log('content filter ', content, filter, result);
 
+                return acc && result;
+            }
+        , true)
+    )
+    return filteredRows;
 }
 
 const EnhancedTableHead = (props) => {
@@ -157,7 +174,7 @@ const FilteringTableHead = ({ handleChangeFilterMethod, handleChangeInputFilterM
                                 currentMethod={columnFilters[cell.columnName].currentMethod}
                                 onInputChange={(newValue) => handleChangeInputFilterMethod(cell.columnName, newValue)}
                                 onMethodChange={(newMethod) => handleChangeFilterMethod(cell.columnName, newMethod)}
-                                type={columnFilters[cell.columnName].numeric ? "number": (columnFilters[cell.columnName].isDate ? 'date' : 'text') }
+                                type={columnFilters[cell.columnName].numeric ? "number" : (columnFilters[cell.columnName].isDate ? 'date' : 'text')}
                             />
                         </TableCell>
                     ))
@@ -236,8 +253,6 @@ EnhancedTableToolbar.propTypes = {
 };
 
 const useStyles = ({ paginationHeight, tableHeight }) => {
-    console.log('paginationHeight, tableHeight ', paginationHeight, tableHeight);
-
     return makeStyles(theme => ({
         root: {
             width: '100%',
@@ -309,20 +324,20 @@ export default function FilteredTable(props) {
     //console.log('table props', { paginationHeight, tableHeight, toolbarHeight })
     const classes = useStyles({ paginationHeight, tableHeight })();
     const classesTableBody = useStyledTableBody();
-    console.log(header);
+    // console.log(header);
     const [columnFilters, setColumnFilters] = React.useState(
         header.reduce(function (acc, column, i) {
             // transformar array em objeto, cujo cada propriedade do objeto é o nome da coluna
             // adiciona a propriedade currentMethod para controlar o filtro atual de cada coluna
-            acc[column.columnName] = { ...column, currentMethod: filteringMethod.contains, input: '' };
+            acc[column.columnName] = { ...column, currentMethod: filteringMethodType.contains, input: '', columnIndice: i, };
             return acc;
         }, {}));
 
-    console.log(columnFilters)
+    // console.log(columnFilters)
 
 
 
-    const [dense, setDense] = React.useState(true);
+    const [dense, setDense] = React.useState(true); // controla a altura das linhas
     const [orderAscDesc, setOrderAscDesc] = React.useState('asc');
     const [orderByColumn, setOrderBy] = React.useState('empresa');
     const [page, setPage] = React.useState(0);
@@ -330,7 +345,7 @@ export default function FilteredTable(props) {
     const [selected, setSelected] = React.useState([]);
 
     const handleChangeFilterMethod = (column, newMethod) => {
-        console.log(column, newMethod)
+        console.log('novo método', column, newMethod)
         setColumnFilters({ ...columnFilters, [column]: { ...columnFilters[column], currentMethod: newMethod } });
     }
 
@@ -354,6 +369,7 @@ export default function FilteredTable(props) {
         setSelected([]);
     };
 
+    // header precisa ter id
     const handleClick = (event, id) => {
         const selectedIndex = selected.indexOf(id);
         let newSelected = [];
@@ -430,15 +446,15 @@ export default function FilteredTable(props) {
                             classes={{ root: classesTableBody.root }}
                         >
                             {//getOrderedList(rows, orderAscDesc, orderByColumn)
-                            rows
-                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                .map((row, index, array) => {
-                                    const isItemSelected = isSelected(row.id);
-                                    const labelId = `enhanced-table-checkbox-${index}`;
-                                    return (
-                                        createRow(row, isItemSelected, labelId, handleClick)
-                                    );
-                                })}
+                                getFilteredList(rows, columnFilters)
+                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    .map((row, index, array) => {
+                                        const isItemSelected = isSelected(row.id);
+                                        const labelId = `enhanced-table-checkbox-${index}`;
+                                        return (
+                                            createRow(row, isItemSelected, labelId, handleClick)
+                                        );
+                                    })}
                             {/* createTableBodyFill(header, emptyRows, dense) */}{/* criar linhas vazias para preencher tabela */}
                         </TableBody>
                     </TableUI>

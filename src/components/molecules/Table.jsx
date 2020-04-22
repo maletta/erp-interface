@@ -204,7 +204,7 @@ EnhancedTableToolbar.propTypes = {
 };
 
 const useStyles = ({ paginationHeight, tableHeight }) => {
-    console.log('paginationHeight, tableHeight ', paginationHeight, tableHeight);
+    // console.log('paginationHeight, tableHeight ', paginationHeight, tableHeight);
 
     return makeStyles(theme => ({
         root: {
@@ -274,7 +274,7 @@ const useStyledTableBody = makeStyles(theme => ({
 
 export default function EnhancedTable(props) {
     const { rows, showTableToolbar, header, paginationHeight, tableHeight, toolbarHeight } = props;
-    console.log('table props', { paginationHeight, tableHeight, toolbarHeight })
+    // console.log('table props', { paginationHeight, tableHeight, toolbarHeight })
     const classes = useStyles({ paginationHeight, tableHeight })();
     const classesTableBody = useStyledTableBody();
     const [orderAscDesc, setOrderAscDesc] = React.useState('asc');

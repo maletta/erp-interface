@@ -113,7 +113,7 @@ const currencies = [
     },
 ];
 
-
+// header precisa ter id
 const createData = (id, empresa, titulo, parcela, nome, vencimento, vencimentoUtil,
     valorOriginal, saldo, baixa, listaDeBaixas, juros, impostos) => {
     return {
@@ -140,6 +140,7 @@ const data = [
     createData(15, '001/00', '777777', '2 de 10', 'Fornecedor A', '2020/08/24', '2020/09/24', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
 ];
 
+// header precisa ter id
 const createDataBaixas = (id, seq, dataDaBaixa, valor, porcentagem, cheque, conta) => {
     return {
         id, seq, dataDaBaixa, valor, porcentagem, cheque, conta
@@ -162,6 +163,7 @@ const dataBaixas = [
 
 ]
 
+// header precisa ter id
 const createDataRateios = (id, seq, centroDeCusto, valor, porcentagem) => {
     return {
         id, seq, centroDeCusto, valor, porcentagem,
@@ -185,7 +187,7 @@ const dataRateios = [
 
 const useStyle = props => {
     return makeStyles(theme => {
-        console.log(theme.breakpoints.down('sm'));
+        // console.log(theme.breakpoints.down('sm'));
         return ({
             root: {
                 display: 'flex',

@@ -6,7 +6,7 @@ import { makeStyles, lighten } from "@material-ui/core/styles";
 const inputVariantType = {
     outlined: (theme, color) => ({
         root: {
-            color: theme.palette[color].contrastText,
+            color: theme.palette.text.primary,
             backgroundColor: theme.palette[color].light,
             '&:hover $notchedOutline': {
                 borderColor: theme.palette[color].main,
@@ -36,7 +36,9 @@ const inputVariantType = {
     }),
     filled: (theme, color) => ({
         root: {
-            color: theme.palette[color].contrastText,
+            height: '46px',
+            fontSize: '0.9em',
+            color: theme.palette.text.primary,
             backgroundColor: theme.palette[color].light,
             '&$focused': {
                 borderColor: theme.palette[color].dark,
@@ -66,10 +68,10 @@ export const useStylesLabel = makeStyles(theme => (
     {
         root: {
             fontSize: '0.8rem',
-            color: theme.palette['primary'].contrastText,
+            color: theme.palette.text.primary,
             textTransform: 'uppercase',
             '&$focused': {
-                color: theme.palette['primary'].contrastText,
+                color: theme.palette.text.primary,
             },
         },
         focused: {},
@@ -78,9 +80,9 @@ export const useStylesLabel = makeStyles(theme => (
 ));/* ,{ name: 'MuiInputLabel' }  to edit all*/
 
 
-const TextField = ({ color, ...props }) => {
+const TextField = ({ color, InputProps, ...props }) => {
     const inputClasses = makeStyles(theme => mountInputStyles(theme, color, props.variant))();
-    const InputProps = {
+    const InputPropsClasses = {
         classes: {
             root: inputClasses.root,
             notchedOutline: inputClasses.notchedOutline,
@@ -90,8 +92,9 @@ const TextField = ({ color, ...props }) => {
     };
     const labelClasses = useStylesLabel();
     return <TextFieldUI {...props}
-
-        InputProps={InputProps}
+        // size="small"
+        InputProps={{...InputPropsClasses, ...InputProps}}
+       // InputProps={InputProps}
         InputLabelProps={{ classes: labelClasses }}
     />;
 }

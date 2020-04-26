@@ -18,6 +18,7 @@ import { Typography } from "@material-ui/core";
 import MainAppBar from "../../atoms/MainAppBar";
 import TitleBar from "../../atoms/TitleBar";
 import TextField from "../../atoms/TextField";
+import TextFieldPopover from "../../molecules/TextFieldPopover";
 import MenuItem from "@material-ui/core/MenuItem";
 import { iconOptions } from "../../atoms/SquaredIcon";
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
@@ -123,15 +124,15 @@ const createData = (id, empresa, titulo, parcela, nome, vencimento, vencimentoUt
 }
 
 const data = [
-    createData(1,  '001/00', '111111', '2 de 10', 'Fornecedor A', '2020/08/10', '2020/09/10', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
-    createData(2,  '001/00', '111111', '2 de 10', 'Fornecedor A', '2020/08/11', '2020/09/11', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
-    createData(3,  '001/00', '222222', '2 de 10', 'Fornecedor A', '2020/08/12', '2020/09/12', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
-    createData(4,  '001/00', '222222', '2 de 10', 'Fornecedor A', '2020/08/13', '2020/09/13', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
-    createData(5,  '001/00', '222222', '2 de 10', 'Fornecedor A', '2020/08/14', '2020/09/14', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
-    createData(6,  '001/00', '333333', '2 de 10', 'Fornecedor A', '2020/08/15', '2020/09/15', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
-    createData(7,  '001/00', '333333', '2 de 10', 'Fornecedor A', '2020/08/16', '2020/09/16', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
-    createData(8,  '001/00', '444444', '2 de 10', 'Fornecedor A', '2020/08/17', '2020/09/17', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
-    createData(9,  '001/00', '444444', '2 de 10', 'Fornecedor A', '2020/08/18', '2020/09/18', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
+    createData(1, '001/00', '111111', '2 de 10', 'Fornecedor A', '2020/08/10', '2020/09/10', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
+    createData(2, '001/00', '111111', '2 de 10', 'Fornecedor A', '2020/08/11', '2020/09/11', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
+    createData(3, '001/00', '222222', '2 de 10', 'Fornecedor A', '2020/08/12', '2020/09/12', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
+    createData(4, '001/00', '222222', '2 de 10', 'Fornecedor A', '2020/08/13', '2020/09/13', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
+    createData(5, '001/00', '222222', '2 de 10', 'Fornecedor A', '2020/08/14', '2020/09/14', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
+    createData(6, '001/00', '333333', '2 de 10', 'Fornecedor A', '2020/08/15', '2020/09/15', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
+    createData(7, '001/00', '333333', '2 de 10', 'Fornecedor A', '2020/08/16', '2020/09/16', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
+    createData(8, '001/00', '444444', '2 de 10', 'Fornecedor A', '2020/08/17', '2020/09/17', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
+    createData(9, '001/00', '444444', '2 de 10', 'Fornecedor A', '2020/08/18', '2020/09/18', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
     createData(10, '001/00', '555555', '2 de 10', 'Fornecedor A', '2020/08/19', '2020/09/19', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
     createData(11, '001/00', '555555', '2 de 10', 'Fornecedor A', '2020/08/20', '2020/09/20', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
     createData(12, '001/00', '666666', '2 de 10', 'Fornecedor A', '2020/08/21', '2020/09/21', '1000,00', '0,00', '1000.00', <VisibilityIcon />, '0,00', '0,00'),
@@ -173,16 +174,49 @@ const createDataRateios = (id, seq, centroDeCusto, valor, porcentagem) => {
 const dataRateios = [
     createDataRateios(1, 1, '26/12/2019', '430,00', '25%'),
     createDataRateios(2, 2, '02/01/2020', '430,00', '25%'),
-    createDataRateios(2, 2, '02/01/2020', '430,00', '25%'),
-    createDataRateios(2, 2, '02/01/2020', '430,00', '25%'),
-    createDataRateios(2, 2, '02/01/2020', '430,00', '25%'),
-    createDataRateios(2, 2, '02/01/2020', '430,00', '25%'),
-    createDataRateios(2, 2, '02/01/2020', '430,00', '25%'),
-    createDataRateios(2, 2, '02/01/2020', '430,00', '25%'),
-    createDataRateios(2, 2, '02/01/2020', '430,00', '25%'),
-    createDataRateios(2, 2, '02/01/2020', '430,00', '25%'),
-    createDataRateios(2, 2, '02/01/2020', '430,00', '25%'),
-    createDataRateios(2, 2, '02/01/2020', '430,00', '25%'),
+    createDataRateios(3, 3, '02/01/2020', '430,00', '25%'),
+    createDataRateios(4, 4, '02/01/2020', '430,00', '25%'),
+    createDataRateios(5, 5, '02/01/2020', '430,00', '25%'),
+    createDataRateios(6, 6, '02/01/2020', '430,00', '25%'),
+    createDataRateios(7, 7, '02/01/2020', '430,00', '25%'),
+    createDataRateios(8, 8, '02/01/2020', '430,00', '25%'),
+    createDataRateios(9, 9, '02/01/2020', '430,00', '25%'),
+    createDataRateios(10, 10, '02/01/2020', '430,00', '25%'),
+    createDataRateios(11, 11, '02/01/2020', '430,00', '25%'),
+    createDataRateios(12, 12, '02/01/2020', '430,00', '25%'),
+]
+
+const createDataFornecedores = (id, fornecedor) => {
+    return {
+        id, fornecedor,
+    };
+}
+
+const dataFornecedores = [
+    createDataFornecedores(1, 'Fornecedor 1'),
+    createDataFornecedores(2, 'Fornecedor 2'),
+    createDataFornecedores(3, 'Fornecedor 3'),
+    createDataFornecedores(4, 'Fornecedor 4'),
+    createDataFornecedores(5, 'Fornecedor 5'),
+    createDataFornecedores(6, 'Fornecedor 6'),
+    createDataFornecedores(7, 'Fornecedor 7'),
+    createDataFornecedores(8, 'Fornecedor 8'),
+    createDataFornecedores(9, 'Fornecedor 9'),
+    createDataFornecedores(10, 'Fornecedor 10'),
+    createDataFornecedores(11, 'Fornecedor 11'),
+    createDataFornecedores(12, 'Fornecedor 12'),
+    createDataFornecedores(13, 'Fornecedor 13'),
+    createDataFornecedores(14, 'Fornecedor 14'),
+    createDataFornecedores(15, 'Fornecedor 15'),
+    createDataFornecedores(16, 'Fornecedor 16'),
+    createDataFornecedores(17, 'Fornecedor 17'),
+    createDataFornecedores(18, 'Fornecedor 18'),
+    createDataFornecedores(19, 'Fornecedor 19'),
+    createDataFornecedores(20, 'Fornecedor 20'),
+    createDataFornecedores(21, 'Fornecedor 21'),
+    createDataFornecedores(22, 'Fornecedor 22'),
+
+    
 ]
 
 const useStyle = props => {
@@ -270,12 +304,12 @@ const useStyle = props => {
 
 const NovoLayout = () => {
     const classes = useStyle({})();
-    const [mainTab, setMainTab] = React.useState(0);
+    const [mainTab, setMainTab] = React.useState(1);
     const [secondaryTab, setSecondaryTab] = React.useState(0);
     const [rateiosTab, setRateiosTab] = React.useState(0);
     const handlePrimaryTabAttach = () => { };
     const handleSecondaryTabAttach = () => { };
-
+    const [supplier, setSupplier] = React.useState('');
 
     return (
         <BodyScrollHidden>
@@ -356,16 +390,15 @@ const NovoLayout = () => {
                                             <Grid container spacing={1} >
                                                 {/* Grid container largura do input */}
                                                 <Grid container item xs={6} sm={6}>
-                                                    <TextField
+                                                    <TextFieldPopover
                                                         id="outlined-select-currency"
-                                                        select label="Fornecedor" helperText=" " variant="filled" fullWidth
-                                                    >
-                                                        {currencies.map(option => (
-                                                            <MenuItem key={option.value} value={option.value}>
-                                                                {option.label}
-                                                            </MenuItem>
-                                                        ))}
-                                                    </TextField>
+                                                        label="Fornecedor" helperText=" " variant="filled" fullWidth
+                                                        title={'Consultar fornecedor'}
+                                                        data={dataFornecedores}
+                                                        currentValue={supplier}
+                                                        setCurrentValue={setSupplier}
+                                                        columnTarget={'fornecedor'}
+                                                    />
                                                 </Grid>
                                                 <Grid container item xs={5} sm={5}>
                                                     <TextField

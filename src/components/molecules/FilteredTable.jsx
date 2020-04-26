@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Checkbox from '@material-ui/core/Checkbox';
 import clsx from "clsx";
+import ConditionalComponent from '../atoms/ConditionalComponent';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -80,9 +81,8 @@ function getOrderedList(rows, orderAscDesc, orderByColumn) {
 }
 
 function getFilteredList(rows, columnFilters) {
-    const filteredColumns = Object.keys(columnFilters).filter(column => columnFilters[column].input || columnFilters[column].input.length > 0)
-    console.log('meus filtros ', filteredColumns)
-    console.log('rows ', rows);
+    const filteredColumns = Object.keys(columnFilters).filter(column => columnFilters[column].input || columnFilters[column].input.length > 0);
+    const initialResult = true;
     const filteredRows = rows.filter(
         row => filteredColumns.reduce(
             (acc, column) => {
@@ -90,32 +90,32 @@ function getFilteredList(rows, columnFilters) {
                 const filter = columnFilters[column].input;
                 const filterMethod = columnFilters[column].currentMethod;
                 const result = filteringMethod[filterMethod](content, filter);
-                console.log('filtro aplicado ', filterMethod);
-                console.log('content filter ', content, filter, result);
-
                 return acc && result;
             }
-        , true)
+            , initialResult)
     )
     return filteredRows;
 }
 
 const EnhancedTableHead = (props) => {
-    const { headerCells, orderByColumn, orderAscDesc, numSelected, rowCount, onRequestSort, onSelectAllClick, classes } = props;
+    const { headerCells, orderByColumn, orderAscDesc, numSelected, rowCount, onRequestSort,
+        onSelectAllClick, classes, checkboxColumn } = props;
     const createSortHandler = property => event => {
         onRequestSort(event, property);
     };
     return (
         <TableHead>
             <TableRow>
-                <TableCell padding="checkbox">
-                    <Checkbox
-                        indeterminate={numSelected > 0 && numSelected < rowCount}
-                        checked={rowCount > 0 && numSelected === rowCount}
-                        onChange={onSelectAllClick}
-                        inputProps={{ 'aria-label': 'selecionar todas as linhas' }}
-                    />
-                </TableCell>
+                <ConditionalComponent condition={checkboxColumn}>
+                    <TableCell padding="checkbox">
+                        <Checkbox
+                            indeterminate={numSelected > 0 && numSelected < rowCount}
+                            checked={rowCount > 0 && numSelected === rowCount}
+                            onChange={onSelectAllClick}
+                            inputProps={{ 'aria-label': 'selecionar todas as linhas' }}
+                        />
+                    </TableCell>
+                </ConditionalComponent>
                 {
                     headerCells.map((cell, index) => {
                         return (
@@ -150,6 +150,7 @@ const EnhancedTableHead = (props) => {
 
 EnhancedTableHead.propTypes = {
     headerCells: PropTypes.array.isRequired,
+    checkboxColumn: PropTypes.bool.isRequired,
     classes: PropTypes.object.isRequired,
     numSelected: PropTypes.number.isRequired,
     onRequestSort: PropTypes.func.isRequired,
@@ -160,13 +161,16 @@ EnhancedTableHead.propTypes = {
 };
 
 
-const FilteringTableHead = ({ handleChangeFilterMethod, handleChangeInputFilterMethod, headerCells, columnFilters }) => {
+const FilteringTableHead = ({ handleChangeFilterMethod, handleChangeInputFilterMethod, headerCells, columnFilters, checkboxColumn }) => {
     //currentMethod={columnFilters[cell.columnFilters]}
 
     return (
         <TableHead>
             <TableRow>
-                <TableCell padding={'none'} />
+                <ConditionalComponent condition={checkboxColumn}>
+                    <TableCell padding={'none'} />
+                </ConditionalComponent>
+
                 {
                     headerCells.map((cell, index) => (
                         <TableCell key={index}>
@@ -252,6 +256,29 @@ EnhancedTableToolbar.propTypes = {
     toolbarHeight: PropTypes.string,
 };
 
+
+// header precisa ter id
+const selectRow = (row, selected, setSelected) => {
+    const { id } = row;
+    const selectedIndex = selected.indexOf(id);
+    let newSelected = [];
+
+    if (selectedIndex === -1) {
+        newSelected = newSelected.concat(selected, id);
+    } else if (selectedIndex === 0) {
+        newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+        newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+        newSelected = newSelected.concat(
+            selected.slice(0, selectedIndex),
+            selected.slice(selectedIndex + 1),
+        );
+    }
+
+    setSelected(newSelected);
+}
+
 const useStyles = ({ paginationHeight, tableHeight }) => {
     return makeStyles(theme => ({
         root: {
@@ -320,7 +347,8 @@ const useStyledTableBody = makeStyles(theme => ({
 
 
 export default function FilteredTable(props) {
-    const { rows, showFilteringTableHead, showTableToolbar, header, paginationHeight, tableHeight, toolbarHeight } = props;
+    const { checkboxColumn, header, paginationHeight, rows, rowClick, showFilteringTableHead,
+        showTableToolbar, tableHeight, toolbarHeight } = props;
     //console.log('table props', { paginationHeight, tableHeight, toolbarHeight })
     const classes = useStyles({ paginationHeight, tableHeight })();
     const classesTableBody = useStyledTableBody();
@@ -334,9 +362,6 @@ export default function FilteredTable(props) {
         }, {}));
 
     // console.log(columnFilters)
-
-
-
     const [dense, setDense] = React.useState(true); // controla a altura das linhas
     const [orderAscDesc, setOrderAscDesc] = React.useState('asc');
     const [orderByColumn, setOrderBy] = React.useState('empresa');
@@ -369,25 +394,10 @@ export default function FilteredTable(props) {
         setSelected([]);
     };
 
-    // header precisa ter id
-    const handleClick = (event, id) => {
-        const selectedIndex = selected.indexOf(id);
-        let newSelected = [];
 
-        if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, id);
-        } else if (selectedIndex === 0) {
-            newSelected = newSelected.concat(selected.slice(1));
-        } else if (selectedIndex === selected.length - 1) {
-            newSelected = newSelected.concat(selected.slice(0, -1));
-        } else if (selectedIndex > 0) {
-            newSelected = newSelected.concat(
-                selected.slice(0, selectedIndex),
-                selected.slice(selectedIndex + 1),
-            );
-        }
-
-        setSelected(newSelected);
+    const handleRowClick = (event, row) => {
+        rowClick(row);
+        selectRow(row, selected, setSelected)
     };
 
     const handleChangePage = (event, newPage) => {
@@ -430,6 +440,7 @@ export default function FilteredTable(props) {
                             onSelectAllClick={handleSelectAllClick}
                             onRequestSort={handleRequestSort}
                             rowCount={rows.length}
+                            checkboxColumn={checkboxColumn}
                         />
                         {
                             showFilteringTableHead && (
@@ -439,6 +450,7 @@ export default function FilteredTable(props) {
                                     handleChangeInputFilterMethod={handleChangeInputFilterMethod}
                                     headerCells={header}
                                     columnFilters={columnFilters}
+                                    checkboxColumn={checkboxColumn}
                                 />
                             )
                         }
@@ -446,13 +458,13 @@ export default function FilteredTable(props) {
                             classes={{ root: classesTableBody.root }}
                         >
                             {//getOrderedList(rows, orderAscDesc, orderByColumn)
-                                getFilteredList(rows, columnFilters)
+                                getOrderedList(getFilteredList(rows, columnFilters), orderAscDesc, orderByColumn)
                                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     .map((row, index, array) => {
                                         const isItemSelected = isSelected(row.id);
                                         const labelId = `enhanced-table-checkbox-${index}`;
                                         return (
-                                            createRow(row, isItemSelected, labelId, handleClick)
+                                            createRow(row, isItemSelected, labelId, handleRowClick, checkboxColumn)
                                         );
                                     })}
                             {/* createTableBodyFill(header, emptyRows, dense) */}{/* criar linhas vazias para preencher tabela */}
@@ -484,15 +496,19 @@ export default function FilteredTable(props) {
 }
 
 FilteredTable.defaultProps = {
+    checkboxColumn: true, // coluna com checkbox
     paginationHeight: '8vh',
+    rowClick: () => { },
     showFilteringTableHead: true,
     tableHeight: '73vh',
-    toolbarHeight: '9vh'
+    toolbarHeight: '9vh',
 }
 
 FilteredTable.propTypes = {
+    checkboxColumn: PropTypes.bool,
     header: PropTypes.array.isRequired,
     paginationHeight: PropTypes.string,
+    rowClick: PropTypes.func,
     rows: PropTypes.array.isRequired,
     showFilteringTableHead: PropTypes.bool,
     showTableToolbar: PropTypes.any,
@@ -512,21 +528,25 @@ const createTableBodyFill = (header, emptyRows, dense) => {
     )
 }
 
-const createRow = (row, isItemSelected, labelId, onClickHandle) => {
+const createRow = (row, isItemSelected, labelId, handleRowClick, checkboxColumn) => {
     const rowKeys = Object.keys(row);
     return (
         <TableRow
             key={row.id}
             hover
-            onClick={event => onClickHandle(event, row.id)}
+            onClick={event => handleRowClick(event, row)}
 
         >
-            <TableCell padding="checkbox">
-                <Checkbox
-                    checked={isItemSelected}
-                    inputProps={{ 'aria-labelledby': labelId }}
-                />
-            </TableCell>
+            <ConditionalComponent condition={checkboxColumn}>
+                <TableCell padding="checkbox">
+                    <Checkbox
+                        checked={isItemSelected}
+                        inputProps={{ 'aria-labelledby': labelId }}
+                    />
+                </TableCell>
+            </ConditionalComponent>
+
+
             {
                 rowKeys.map((key, index) => {
                     return (

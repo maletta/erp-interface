@@ -90,11 +90,11 @@ const filteringMethod = {
     [filteringMethodType.doesNotEqual]: (content, filter) => !(`${content}` === `${filter}`),
     [filteringMethodType.endsWith]: (content, filter) => `${content}`.endsWith(`${filter}`),
     [filteringMethodType.equals]: (content, filter) => `${content}` === `${filter}`,
-    [filteringMethodType.lessThan]: (content, filter) => parseInt(content,10) < parseInt(filter, 10),
-    [filteringMethodType.lessThanOrEqualTo]: (content, filter) => parseInt(content,10)  <= parseInt(filter, 10),
-    [filteringMethodType.greaterThan]: (content, filter) => parseInt(content,10) > parseInt(filter, 10),
-    [filteringMethodType.greaterThanOrEqualTo]: (content, filter) => parseInt(content,10) >= parseInt(filter, 10),
-    [filteringMethodType.monthEquals]: (content, filter) => moment.format(moment(`${content}`).month(), 'M') === parseInt(filter, 10),
+    [filteringMethodType.lessThan]: (content, filter) => parseInt(content, 10) < parseInt(filter, 10),
+    [filteringMethodType.lessThanOrEqualTo]: (content, filter) => parseInt(content, 10) <= parseInt(filter, 10),
+    [filteringMethodType.greaterThan]: (content, filter) => parseInt(content, 10) > parseInt(filter, 10),
+    [filteringMethodType.greaterThanOrEqualTo]: (content, filter) => parseInt(content, 10) >= parseInt(filter, 10),
+    [filteringMethodType.monthEquals]: (content, filter) => parseInt(moment(`${content}`).format('M'), 10) == parseInt(filter, 10), // deixo só == pq o mês é um caractere, do banco 2 caracteres. logo 8 === 08 é false   
     [filteringMethodType.startsWith]: (content, filter) => `${content}`.startsWith(`${filter}`),
 }
 
@@ -109,6 +109,7 @@ const useStyles = makeStyles(theme => ({
     logo: {
         height: '24px',
         padding: '0px 0px',
+        opacity: '0.54',
     },
     menuItem: {
         display: 'grid',
@@ -163,7 +164,7 @@ const TextFieldFiltering = ({ type, currentMethod, onInputChange, onMethodChange
         const newValue = e.currentTarget.value;
         onInputChange(newValue);
     }
-   // console.log('text filtering mount ', currentMethod);
+    // console.log('text filtering mount ', currentMethod);
     const classes = useStyles();
     return (
         <div className={classes.root}>

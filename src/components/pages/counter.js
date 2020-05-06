@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import ConnectTo from "../../store/connect";
-import { decrementAction, incrementAction } from "../../store/reducers/counter";
+import ConnectTo from "../../state/store/connect";
+import { decrementAction, incrementAction } from "../../state/reducers/counter";
 
 const Counter = ({ dispatch, counter }) => {
   const decrementHandler = () => dispatch(decrementAction());

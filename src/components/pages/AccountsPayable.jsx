@@ -1,29 +1,29 @@
 import React, { Fragment } from "react";
 import clsx from 'clsx';
-import ConnectTo from "../../../state/store/connect";
-import DatePicker from "../../atoms/DatePicker";
-import FilteredTable, { createHeadersData } from "../../molecules/FilteredTable";
-import IconsPalette from "../../molecules/IconsPalette";
+import ConnectTo from "../../state/store/connect";
+import DatePicker from "../atoms/DatePicker";
+import FilteredTable, { createHeadersData } from "../molecules/FilteredTable";
+import IconsPalette from "../molecules/IconsPalette";
 import moment from "moment";
 import MomentUtils from '@date-io/moment';
-import Tabs from "../../atoms/Tabs";
-import TabPanel from "../../atoms/TabPanel";
-import SimpleSidebar from "../../molecules/SimpleSidebar";
-import Table from "../../molecules/Table";
-import BodyScrollHidden from "../../atoms/BodyScrollHidden";
+import Tabs from "../atoms/Tabs";
+import TabPanel from "../atoms/TabPanel";
+import SimpleSidebar from "../molecules/SimpleSidebar";
+import Table from "../molecules/Table";
+import BodyScrollHidden from "../atoms/BodyScrollHidden";
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper'
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from "@material-ui/core";
-import MainAppBar from "../../atoms/MainAppBar";
-import TitleBar from "../../atoms/TitleBar";
-import TextField from "../../atoms/TextField";
-import TextFieldPopover from "../../molecules/TextFieldPopover";
+import MainAppBar from "../atoms/MainAppBar";
+import TitleBar from "../atoms/TitleBar";
+import TextField from "../atoms/TextField";
+import TextFieldPopover from "../molecules/TextFieldPopover";
 import MenuItem from "@material-ui/core/MenuItem";
-import { iconOptions } from "../../atoms/SquaredIcon";
+import { iconOptions } from "../atoms/SquaredIcon";
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-import { payAction, demandAction } from "../../../state/actions/financial";
+import { payAction, demandAction } from "../../state/actions/financial";
 
 
 
@@ -305,7 +305,7 @@ const useStyle = props => {
 };
 
 
-const NovoLayout = ({ dispatch, financial }) => {
+const AccountsPayable = ({ dispatch, financial }) => {
     const classes = useStyle({})();
     const [mainTab, setMainTab] = React.useState(1);
     const [secondaryTab, setSecondaryTab] = React.useState(0);
@@ -740,4 +740,4 @@ const mapStateToProps = ({ financial }, props) => {
     };
 };
 
-export default ConnectTo(mapStateToProps)(NovoLayout);
+export default ConnectTo(mapStateToProps)(AccountsPayable);

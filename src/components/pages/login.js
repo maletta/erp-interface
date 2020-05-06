@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import Connect from "../../store/connect";
-import { loginAction } from "../../store/reducers/auth";
+import Connect from "../../state/store/connect";
+import { loginAction } from "../../state/reducers/auth";
 
 const Login = ({ dispatch }) => {
   const [name, setName] = useState("");

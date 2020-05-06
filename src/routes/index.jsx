@@ -8,11 +8,8 @@ import Login from "../components/pages/login";
 import Counter from "../components/pages/counter";
 import TablePage from "../components/pages/test/TablePage";
 import EnhancedTable from "../components/pages/test/TablePage2";
-import TestPage from "../components/pages/test";
 import CardPage from "../components/pages/test/CardPage";
-import ContasAPagar from "../components/pages/ContasAPagar";
-import ContasAPagarAlteracao from "../components/pages/ContasAPagarAlteracao";
-import NovoLayout from "../components/pages/test/NovoLayout";
+import AccountsPayable from "../components/pages/AccountsPayable";
 
 
 
@@ -31,9 +28,7 @@ const AppRouter = ({children}) => {
           <Route path={"/table"}> <TablePage/> </Route>
           <Route path={"/table2"}> <EnhancedTable/> </Route>
           <Route path={"/card"}> <CardPage/> </Route>
-          <Route path={"/contas-a-pagar"}> <ContasAPagar/> </Route>
-          <Route path={"/contas-a-pagar-alteracao"}> <ContasAPagarAlteracao/> </Route>
-          <Route exact path={"/"} > <NovoLayout/> </Route>
+          <Route exact path={"/"} > <AccountsPayable/> </Route>
 
           <Private>
             <Switch>

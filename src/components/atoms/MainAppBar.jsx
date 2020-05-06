@@ -2,6 +2,7 @@ import React from 'react';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import AppBar from '@material-ui/core/AppBar';
 import clsx from "clsx";
+import Connect from "../../state/store/connect";
 import Button from '@material-ui/core/Button';
 import Grid from "@material-ui/core/Grid";
 import IconButton from '@material-ui/core/IconButton';
@@ -12,7 +13,10 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, lighten } from '@material-ui/core/styles';
-
+import { setThemeAction } from '../../state/actions/theme';
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import paletteTypes from '../../utils/palettes';
 
 
 const useStyles = props => (makeStyles(theme => ({
@@ -49,8 +53,46 @@ const useStyles = props => (makeStyles(theme => ({
   },
 })));
 
-export default function MainAppBar({ height }) {
+const MainAppBar = ({ dispatch, height }) => {
   const classes = useStyles({ height })();
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+
+  const setThemeHandler = (e, theme) => {
+    e.stopPropagation();
+    handleClose();
+    return dispatch(setThemeAction(theme))
+  };
+
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const paletteMenu = () => {
+    const keys = Object.keys(paletteTypes);
+    return(
+      <Menu
+      id="simple-menu"
+      anchorEl={anchorEl}
+      keepMounted
+      open={Boolean(anchorEl)}
+      onClose={handleClose}
+    >
+      {
+        keys.map(palette => (
+          <MenuItem key={palette} onClick={(e) => setThemeHandler(e, palette)}>{palette}</MenuItem>
+        ))
+      }
+    </Menu>
+    )
+
+  }
+
   return (
     <AppBar position="static" className={classes.appBar}>
 
@@ -64,12 +106,13 @@ export default function MainAppBar({ height }) {
           <IconButton edge="start" className={classes.menuButton} aria-label="menu">
             <AccountCircleIcon className={classes.icon} />
           </IconButton>
-          <IconButton edge="start" className={classes.menuButton} aria-label="menu">
+          <IconButton edge="start" className={classes.menuButton} aria-label="menu" onClick={handleClick}>
             <SettingsIcon className={classes.icon} />
           </IconButton>
+          {paletteMenu()}
         </Grid>
       </Grid>
-    </AppBar>
+    </AppBar >
   );
 }
 
@@ -80,3 +123,12 @@ MainAppBar.defaultProps = {
 MainAppBar.propTypes = {
   height: PropTypes.string.isRequired,
 }
+
+const mapStateToProps = ({ theme }, props) => {
+  return {
+    theme,
+    ...props
+  };
+};
+
+export default Connect(mapStateToProps)(MainAppBar);

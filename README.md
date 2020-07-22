@@ -1,6 +1,7 @@
-# Recriação da interface do discord
+# Interface de um sistema ERP
 
-Foobar is a Python library for dealing with word pluralization.
+Tela faz parte do módulo para gestão do setor financeiro.
+Possui tabela com filtros e ordenação e também, guias para navegações entre funcionalidades e personalização de temas e cores.
 
 ## Instalação
 

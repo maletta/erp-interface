@@ -321,7 +321,7 @@ const AccountsPayable = ({ dispatch, financial }) => {
             <MuiPickersUtilsProvider utils={MomentUtils}>
                 <div className={classes.root}>
                     <MainAppBar height={'40px'} />
-                    <TitleBar label={`Contas a pagar ${financial.debt}`} height={'40px'} />
+                    <TitleBar label={`Contas a pagar `} height={'40px'} />
                     {/* Grid que agrupa o conteúdo principal e conteúdo lateral */}
                     <Grid container spacing={0} className={classes.gridRoot}>
                         {/* Grid com o conteúdo principal */}
